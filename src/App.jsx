@@ -1,8 +1,30 @@
+import { Footer, Header, Loader, NotFound } from 'components/Common';
+import { ROUTER } from 'constants/index';
+import React, { Suspense } from 'react';
+import { Route, Switch } from 'react-router-dom';
+
 function App() {
     return (
-        <div className='App'>
-            <h1>Vo Cong Dat</h1>
-        </div>
+        <>
+            <Suspense fallback={<Loader />}>
+                <Header />
+
+                <Switch>
+                    {ROUTER.map((route) => (
+                        <Route
+                            key={route}
+                            exact={route.isExact}
+                            path={route.path}
+                        >
+                            {route.component}
+                        </Route>
+                    ))}
+
+                    <Route component={NotFound} />
+                </Switch>
+                <Footer />
+            </Suspense>
+        </>
     );
 }
 
