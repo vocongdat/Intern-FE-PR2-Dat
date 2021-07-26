@@ -17,6 +17,7 @@ import SendIcon from '@material-ui/icons/Send';
 import { makeStyles } from '@material-ui/styles';
 import { IMAGES } from 'constants/index';
 import { Link } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 
 const useStyles = makeStyles({
     copyright: {
@@ -90,7 +91,7 @@ const Footer = () => {
                             <Divider component='p' />
                             <List>
                                 {infoList.map((titleInfo) => (
-                                    <ListItem disablePadding>
+                                    <ListItem key={uuid()} disablePadding>
                                         <FooterList primary={titleInfo} />
                                     </ListItem>
                                 ))}
@@ -106,7 +107,7 @@ const Footer = () => {
 
                             <List>
                                 {aboutList.map((titleAbout) => (
-                                    <ListItem disablePadding>
+                                    <ListItem key={uuid()} disablePadding>
                                         <FooterList primary={titleAbout} />
                                     </ListItem>
                                 ))}

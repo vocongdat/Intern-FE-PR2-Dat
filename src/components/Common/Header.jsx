@@ -147,6 +147,7 @@ const Header = () => {
                         >
                             {ROUTER.map((route) => (
                                 <NavLink
+                                    key={route.id}
                                     exact={route.isExact}
                                     to={route.path}
                                     activeClassName='selected'
