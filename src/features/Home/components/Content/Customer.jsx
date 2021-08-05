@@ -3,9 +3,53 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
-import { IMAGES } from 'constants/index.js';
+import { Images } from 'constants/index.js';
 import { v4 as uuid } from 'uuid';
 import Title from '../Title/Title';
+
+const paperStyle = {
+    overflow: 'visible',
+    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+    mt: 1.5,
+    mb: 2,
+    borderRadius: 2,
+    '& .MuiAvatar-root': {
+        width: 32,
+        height: 32,
+        ml: -0.5,
+        mr: 1,
+    },
+    '&:before': {
+        content: '""',
+        display: 'block',
+        position: 'absolute',
+        bottom: '-32px',
+        left: 52,
+        width: 24,
+        height: 40,
+        bgcolor: 'background.paper',
+        transform: 'translateY(-50%) rotate(45deg)',
+        zIndex: 0,
+    },
+};
+
+const TypographyStyle = {
+    width: 350,
+    fontSize: 18,
+    p: 4.5,
+    textAlign: 'justify',
+    '&:before': {
+        content: '""',
+        display: 'block',
+        left: 8,
+        top: 30,
+        width: 20,
+        height: 20,
+        position: 'absolute',
+        backgroundImage:
+            'url(https://vietponics.vn/wp-content/themes/tm-organik/assets/images/testi_quote_2.png)',
+    },
+};
 
 const Customer = () => {
     const clientInfo = [
@@ -37,7 +81,7 @@ const Customer = () => {
             elevation={0}
             square
             sx={{
-                background: `url(${IMAGES.GREEN_BG}) center center/cover`,
+                background: `url(${Images.GREEN_BG}) center center/cover`,
                 height: '90vh',
                 display: 'flex',
                 alignItems: 'center',
@@ -47,61 +91,16 @@ const Customer = () => {
                 <Grid item xs={12} textAlign='center'>
                     <Title subHeader=' We love our clients' />
                 </Grid>
+
                 <Grid container spacing={5}>
                     {clientInfo.map((user) => (
                         <Grid item xs={4} key={user.id}>
-                            <Paper
-                                sx={{
-                                    overflow: 'visible',
-                                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                    mt: 1.5,
-                                    mb: 2,
-                                    borderRadius: 2,
-                                    '& .MuiAvatar-root': {
-                                        width: 32,
-                                        height: 32,
-                                        ml: -0.5,
-                                        mr: 1,
-                                    },
-                                    '&:before': {
-                                        content: '""',
-                                        display: 'block',
-                                        position: 'absolute',
-                                        bottom: '-32px',
-                                        left: 52,
-                                        width: 24,
-                                        height: 40,
-                                        bgcolor: 'background.paper',
-                                        transform:
-                                            'translateY(-50%) rotate(45deg)',
-                                        zIndex: 0,
-                                    },
-                                }}
-                            >
-                                <Typography
-                                    variant='subtitle1'
-                                    component='p'
-                                    sx={{
-                                        width: 350,
-                                        fontSize: 18,
-                                        p: 4.5,
-                                        textAlign: 'justify',
-                                        '&:before': {
-                                            content: '""',
-                                            display: 'block',
-                                            left: 8,
-                                            top: 30,
-                                            width: 20,
-                                            height: 20,
-                                            position: 'absolute',
-                                            backgroundImage:
-                                                'url(https://vietponics.vn/wp-content/themes/tm-organik/assets/images/testi_quote_2.png)',
-                                        },
-                                    }}
-                                >
+                            <Paper sx={paperStyle}>
+                                <Typography variant='subtitle1' component='p' sx={TypographyStyle}>
                                     {user.review}
                                 </Typography>
                             </Paper>
+
                             <Grid
                                 container
                                 direction='row'
@@ -109,6 +108,7 @@ const Customer = () => {
                                 alignItems='center'
                             >
                                 <Grid item xs={1} />
+
                                 <Grid item xs={3}>
                                     <Avatar
                                         alt={user.firstName}
@@ -116,6 +116,7 @@ const Customer = () => {
                                         sx={{ width: 64, height: 64 }}
                                     />
                                 </Grid>
+
                                 <Grid item xs={5}>
                                     <List>
                                         <ListItem
@@ -134,6 +135,7 @@ const Customer = () => {
                                                     fontWeight: 'bold',
                                                 }}
                                             />
+
                                             <ListItemText
                                                 primary={user.tagline}
                                                 sx={{

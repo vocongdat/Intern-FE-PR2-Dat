@@ -11,8 +11,7 @@ const useStyles = makeStyles({
         zIndex: 1,
     },
     heroContainer: {
-        background:
-            'url("assets/images/bg_02.jpg") center center/cover no-repeat',
+        background: 'url("assets/images/bg_02.jpg") center center/cover no-repeat',
         height: '570px',
         width: '100%',
         display: 'flex',
@@ -61,21 +60,15 @@ const HeroSection = () => {
 
     return (
         <div className={classes.heroContainer}>
-            <video
-                className={classes.video}
-                src={VIDEOS.GRAPE_VIDEO}
-                autoPlay
-                muted
-                loop
-            />
+            <video className={classes.video} src={VIDEOS.GRAPE_VIDEO} autoPlay muted loop />
+
             <div className={classes.overlays} />
+
             <div className={classes.content}>
                 <h2 className={classes.header}>Natural taste</h2>
                 <h2 className={classes.header}>from</h2>
                 <h2 className={classes.header}>the Farm</h2>
-                <h3 className={classes.subContent}>
-                    REACH FOR A HEALTHIER YOU WITH ORGANIC FOODS
-                </h3>
+                <h3 className={classes.subContent}>REACH FOR A HEALTHIER YOU WITH ORGANIC FOODS</h3>
             </div>
         </div>
     );

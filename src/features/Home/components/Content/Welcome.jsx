@@ -1,11 +1,4 @@
-import {
-    Grid,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Typography,
-} from '@material-ui/core';
+import { Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import { styled } from '@material-ui/core/styles';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -46,9 +39,7 @@ const MyList = styled(List)(({ theme }) => ({
 const Welcome = () => {
     const CONTENT = [
         {
-            icon: (
-                <LocalShippingIcon sx={{ color: 'grey.200', fontSize: 48 }} />
-            ),
+            icon: <LocalShippingIcon sx={{ color: 'grey.200', fontSize: 48 }} />,
             title: 'FREE SHIPPING',
             subTitle: 'Trên 1 triệu',
         },
@@ -58,9 +49,7 @@ const Welcome = () => {
             subTitle: 'Hỗ trợ 24/7',
         },
         {
-            icon: (
-                <PersonPinCircleIcon sx={{ color: 'grey.200', fontSize: 48 }} />
-            ),
+            icon: <PersonPinCircleIcon sx={{ color: 'grey.200', fontSize: 48 }} />,
             title: 'GIAO HÀNG TẬN NHÀ',
             subTitle: 'Nhanh',
         },
@@ -76,14 +65,14 @@ const Welcome = () => {
             <Grid item xs={12}>
                 <Title subHeader='chào mừng đến farm đà lạt' />
             </Grid>
+
             <Grid item xs={12}>
                 <Item>
                     <MyList>
                         {CONTENT.map((item, index) => (
                             <ListItem key={item.title}>
-                                <ListItemIcon sx={{ marginRight: 1 }}>
-                                    {item.icon}
-                                </ListItemIcon>
+                                <ListItemIcon sx={{ marginRight: 1 }}>{item.icon}</ListItemIcon>
+
                                 <ListItemText>
                                     <Typography
                                         sx={{
@@ -95,6 +84,7 @@ const Welcome = () => {
                                     </Typography>
                                     <Typography>{item.subTitle}</Typography>
                                 </ListItemText>
+
                                 {index !== CONTENT.length - 1 ? (
                                     <Divider
                                         orientation='vertical'

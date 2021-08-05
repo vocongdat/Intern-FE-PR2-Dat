@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 
 import { HOME_PATH, PRODUCT_PATH, BLOGS_PATH, CONTACT_PATH } from './path';
 
-const Products = React.lazy(() => import('features/Products/Products'));
+const Vegetables = React.lazy(() => import('features/Vegetables/Vegetables'));
 const BLogs = React.lazy(() => import('features/Blogs/Blogs'));
 const Contact = React.lazy(() => import('features/Contact/Contact'));
 
@@ -18,7 +18,7 @@ const ROUTER = [
     },
     {
         path: PRODUCT_PATH,
-        component: <Products />,
+        component: <Vegetables />,
         title: 'Sản phẩm',
         isExact: false,
         id: uuid(),

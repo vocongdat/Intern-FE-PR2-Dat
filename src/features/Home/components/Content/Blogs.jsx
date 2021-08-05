@@ -7,7 +7,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import { BLOGS_IMAGE } from 'constants/index';
+import { blogImages } from 'constants/index';
 import Title from 'features/Home/components/Title/Title';
 import { v4 as uuid } from 'uuid';
 
@@ -19,7 +19,7 @@ const Blogs = () => {
                 'Dưa leo có nguồn dinh dưỡng nhiều hơn các bạn nghĩ. Dưa leo baby là nguồng cung cấp vitamin C và A. Chúng cũng chứa…',
             date: '28 Tháng Sáu, 2020',
             comment: 0,
-            imageUrl: BLOGS_IMAGE.BLOG1,
+            imageUrl: blogImages.BLOG1,
             id: uuid(),
         },
         {
@@ -28,7 +28,7 @@ const Blogs = () => {
                 'Củ hồi củ thì là cách gọi của người Đà Lạt nhé.1.Củ hồi, còn gọi là củ phê-nôn, có lẽ là phiên âm tiếng Việt…',
             date: '25 Tháng Sáu, 2020',
             comment: 0,
-            imageUrl: BLOGS_IMAGE.BLOG2,
+            imageUrl: blogImages.BLOG2,
             id: uuid(),
         },
         {
@@ -37,7 +37,7 @@ const Blogs = () => {
                 'Một điều rõ ràng và chắc chắn là rau hữu cơ tốt cho tất cả mọi đối tượng. Nhưng nếu chưa có khả năng sử…',
             date: '8 Tháng Sáu, 2020',
             comment: 0,
-            imageUrl: BLOGS_IMAGE.BLOG3,
+            imageUrl: blogImages.BLOG3,
             id: uuid(),
         },
     ];
@@ -80,17 +80,15 @@ const Blogs = () => {
                             subheader={blog.date}
                         />
                         <CardContent>
-                            <Typography
-                                gutterBottom
-                                variant='h6'
-                                component='h4'
-                            >
+                            <Typography gutterBottom variant='h6' component='h4'>
                                 {blog.title}
                             </Typography>
+
                             <Typography variant='body2' color='text.secondary'>
                                 {blog.describe}
                             </Typography>
                         </CardContent>
+
                         <CardActions>
                             <Button size='medium'>Đọc tiếp</Button>
                         </CardActions>

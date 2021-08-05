@@ -1,9 +1,7 @@
+import discoverSaga from 'features/Home/discoverSaga';
+import vegetableSaga from 'features/Vegetables/vegetableSaga';
 import { all } from 'redux-saga/effects';
 
-function helloSaga() {
-    console.log('Hello Redux Saga');
-}
-
 export default function* rootSage() {
-    yield all([helloSaga()]);
+    yield all([vegetableSaga(), discoverSaga()]);
 }
