@@ -8,29 +8,38 @@ const Slides = () => {
     const slideInfo = [
         {
             id: uuid(),
-            title: 'Quality products',
-            subTitle: 'A FRIENDLY ORGANIC FARM',
-            paragraph:
-                'Our products are freshly harvested, washed ready for box and finally delivered from our family farm right to your doorstep.',
-            imageUrl:
-                'https://farmdalat.com/wp-content/uploads/2016/10/slider-home-03-slide3-background.jpg',
+            name: 'Sống Organic - Sống khỏe',
+            slogan: 'TRUST THE NATURE!',
+            slug: '/products',
+            imgProduct:
+                'https://farmdalat.com/wp-content/uploads/2016/08/featured-product-box-01.png',
+            backgroundUrl:
+                'https://farmdalat.com/wp-content/uploads/2016/10/slider-home-02-slide1-background.jpg',
+            btnName: 'Xem ngay',
         },
         {
             id: uuid(),
-            title: 'Organik',
-            subTitle: 'The friendly farm',
-            paragraph:
-                'We produce and serve organic fruits, vegetables, juices and dried products. Visit our site for a complete list of fresh and healthy produce.',
-            imageUrl:
-                'https://farmdalat.com/wp-content/uploads/2016/10/slider-home-03-slide2-background.jpg',
+            name: 'Cà phê',
+            slogan: 'good for nature, good for you',
+            brand: 'Organic',
+            slug: '/ca-phe-farm-dalat',
+            imgProduct:
+                'https://farmdalat.com/wp-content/uploads/2020/06/IMG_3237_582x400-1.png',
+            backgroundUrl:
+                'https://farmdalat.com/wp-content/uploads/2016/10/slider-home-02-slide2-background.jpg',
+            btnName: 'Mua ngay',
         },
         {
             id: uuid(),
-            title: 'Natural taste',
-            subTitle: 'from the Farm',
-            paragraph: 'REACH FOR A HEALTHIER YOU WITH ORGANIC FOODS',
-            imageUrl:
-                'https://farmdalat.com/wp-content/uploads/2016/08/slide03_01.jpg',
+            name: 'Nước ép',
+            slogan: 'tốt cho tự nhiên, tốt cho da của bạn',
+            brand: 'Tự nhiên',
+            slug: '/tra-cam-sa-organic-orange-lemongrass-tea',
+            imgProduct:
+                'https://farmdalat.com/wp-content/uploads/2016/08/featured-product-box-01.png',
+            backgroundUrl:
+                'https://farmdalat.com/wp-content/uploads/2016/10/slider-home-02-slide3-background.jpg',
+            btnName: 'Mua ngay',
         },
     ];
     return (
@@ -46,10 +55,13 @@ const Slides = () => {
             {slideInfo.map((slide) => (
                 <div key={slide.id}>
                     <Slider
-                        subTitle={slide.subTitle}
-                        title={slide.title}
-                        paragraph={slide.paragraph}
-                        imageUrl={slide.imageUrl}
+                        name={slide.name}
+                        slogan={slide.slogan}
+                        brand={slide.brand}
+                        slug={slide.slug}
+                        imgProduct={slide.imgProduct}
+                        backgroundUrl={slide.backgroundUrl}
+                        btnName={slide.btnName}
                     />
                 </div>
             ))}

@@ -1,14 +1,14 @@
 import { Box, Container, Grid } from '@material-ui/core';
 import React from 'react';
-import Blogs from './components/Content/Blogs';
-import Cooperation from './components/Content/Cooperation';
-import Customer from './components/Content/Customer';
-import Discover from './components/Content/Discover';
-import Introduce from './components/Content/Introduce';
-import Welcome from './components/Content/Welcome';
-import Slides from './pages/Slides';
+import Blogs from '../components/Content/Blogs';
+import Cooperation from '../components/Content/Cooperation';
+import Customer from '../components/Content/Customer';
+import Discover from '../components/Content/Discover';
+import Introduce from '../components/Content/Introduce';
+import Welcome from '../components/Content/Welcome';
+import Slides from './Slides';
 
-const Home = () => (
+const HomePage = () => (
     <>
         <Slides />
 
@@ -37,4 +37,4 @@ const Home = () => (
         <Cooperation />
     </>
 );
-export default Home;
+export default HomePage;
