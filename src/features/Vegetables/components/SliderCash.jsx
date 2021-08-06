@@ -5,6 +5,7 @@ import { styled } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { selectClear, selectVegetableFilter, vegetableActions } from '../vegetableSlice';
 
 const AirbnbSlider = styled(Slider)(({ theme }) => ({
@@ -40,6 +41,7 @@ const AirbnbSlider = styled(Slider)(({ theme }) => ({
 const minDistance = 50;
 
 const SliderCash = () => {
+    const { t } = useTranslation();
     const [value, setValue] = useState([0, 500]);
     const filter = useSelector(selectVegetableFilter);
     const isClear = useSelector(selectClear);
@@ -80,7 +82,7 @@ const SliderCash = () => {
     return (
         <Box sx={{ width: 250 }}>
             <Typography variant='h6' component='h2' gutterBottom>
-                Theo giá
+                {t('byPrice')}
             </Typography>
 
             <AirbnbSlider
@@ -95,11 +97,11 @@ const SliderCash = () => {
             />
 
             <Button variant='outlined' color='success' onClick={handleFilterByRangePrice}>
-                Lọc
+                {t('filter')}
             </Button>
 
-            <Typography variant='body2' component='span' sx={{ ml: 1 }} gutterBottom>
-                Giá {value[0]}.000 đ — {value[1]}.000 đ
+            <Typography variant='body2' component='span' sx={{ ml: 1, fontSize: 13 }} gutterBottom>
+                {t('price')} {value[0]}.000 đ — {value[1]}.000 đ
             </Typography>
         </Box>
     );

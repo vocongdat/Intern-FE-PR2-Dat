@@ -2,6 +2,7 @@ import logoTransparent from 'assets/images/LogoGreen.png';
 import logoGreen from 'assets/images/WebLogoGreen_Vietponics.png';
 import logoWhite from 'assets/images/WebLogoWhite_Vietponics.png';
 import greenBackground from 'assets/images/bg_02.jpg';
+import featuredProduct from 'assets/images/featured_product.png';
 
 import payment from 'assets/images/footer_payment.png';
 
@@ -35,9 +36,10 @@ const Images = {
     SLIDE_2: slideSecond,
     INTRODUCE: introduce,
     GREEN_BG: greenBackground,
+    FEATURED_BG: featuredProduct,
 };
 
-const introduceImages = [
+const IntroImage = [
     {
         title: 'Introduce Image 1',
         imageUrl: introduce1,
@@ -104,6 +106,4 @@ const companyImages = [
     },
 ];
 
-export default Images;
-
-export { introduceImages, blogImages, companyImages };
+export { Images, IntroImage, blogImages, companyImages };

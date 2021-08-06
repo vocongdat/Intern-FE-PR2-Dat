@@ -1,4 +1,4 @@
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
 import TextField from '@material-ui/core/TextField';
@@ -9,10 +9,12 @@ import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { v4 as uuid } from 'uuid';
 import RatingVegetable from './RatingVegetable';
 
 const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) => {
+    const { t } = useTranslation();
     const [value, setValue] = useState('1');
 
     const [loading, setLoading] = useState(false);
@@ -30,9 +32,9 @@ const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) 
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label='lab API tabs example'>
-                        <Tab label='MÔ TẢ' value='1' />
-                        <Tab label='THÔNG TIN BỔ SUNG' value='2' />
-                        <Tab label='ĐÁNH GIÁ' value='3' />
+                        <Tab label={t('detail')} value='1' />
+                        <Tab label={t('information')} value='2' />
+                        <Tab label={t('rating')} value='3' />
                     </TabList>
                 </Box>
                 <TabPanel value='1'>
@@ -44,7 +46,7 @@ const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) 
                 </TabPanel>
                 <TabPanel value='2'>
                     <Typography variant='body1' gutterBottom>
-                        Cân nặng: {weight.join(', ')}
+                        {`${t('weight')}: ${weight.join(', ')}`}
                     </Typography>
                     <Typography variant='body1' gutterBottom>
                         Sản phẩm còn lại: {quantity}
@@ -108,7 +110,7 @@ const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) 
                             loadingPosition='center'
                             variant='contained'
                         >
-                            Đánh giá
+                            {t('rating')}
                         </LoadingButton>
                     </Box>
                 </TabPanel>

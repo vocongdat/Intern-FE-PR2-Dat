@@ -4,10 +4,12 @@ import ListItemButton from '@material-ui/core/ListItemButton';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { selectCategories, selectVegetableFilter, vegetableActions } from '../vegetableSlice';
 import SliderCash from './SliderCash';
 
 const FilterVegetables = () => {
+    const { t } = useTranslation();
     const categoryList = useSelector(selectCategories);
     const [selectedIndex, setSelectedIndex] = useState('');
     const filter = useSelector(selectVegetableFilter);
@@ -34,7 +36,7 @@ const FilterVegetables = () => {
     return (
         <Box sx={{ mt: 5, minHeight: 750 }}>
             <Typography variant='h6' component='h2' gutterBottom>
-                Theo loại
+                {t('byCategory')}
             </Typography>
 
             <List component='nav' aria-label='main mailbox folders'>
