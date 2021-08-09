@@ -1,5 +1,5 @@
 import { Grid } from '@material-ui/core';
-import CardProduct from 'components/Common/CardProduct';
+import { CardProduct } from 'components/Common/Client/index';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -26,7 +26,6 @@ const Vegetables = () => {
 
     useEffect(() => {
         dispatch(vegetableActions.fetchVegetableList(filter));
-        console.log(vegetableList);
     }, [dispatch, filter]);
 
     return (

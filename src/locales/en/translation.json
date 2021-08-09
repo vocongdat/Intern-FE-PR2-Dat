@@ -1,0 +1,24 @@
+{
+    "home": "Home",
+    "product": "Product",
+    "blog": "BLogs",
+    "contact": "Contact",
+
+    "weight": "Weight",
+    "quantity": "Quantity",
+    "category": "Category",
+    "sharing": "Share",
+    "addToCard": "Add to Card",
+    "detail": "DETAILS",
+    "rating": "RATING",
+    "information": "INFORMATION",
+    "byCategory": "By Category",
+    "byPrice": "By Price",
+    "price": "Price",
+    "filter": "Filter",
+    "edit": "Edit personal information",
+    "update": "Update",
+    "checkout": "Make a payment",
+    "cart": "Cart",
+    "order": "Order"
+}

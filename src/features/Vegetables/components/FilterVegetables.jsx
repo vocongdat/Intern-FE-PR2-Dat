@@ -18,9 +18,6 @@ const FilterVegetables = () => {
 
     useEffect(() => {
         dispatch(vegetableActions.fetchCategory());
-        if (filter.length <= 2) {
-            setSelectedIndex('');
-        }
     }, [filter]);
 
     const handleListItemClick = (event, id) => {

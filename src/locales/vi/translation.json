@@ -1,0 +1,24 @@
+{
+    "home": "Trang chủ",
+    "product": "Sản phẩm",
+    "blog": "Chia sẻ",
+    "contact": "Liên hệ",
+
+    "weight": "Cân nặng",
+    "quantity": "Số lượng",
+    "category": "Phân loại",
+    "sharing": "Chia sẽ",
+    "addToCard": "Thêm vào giỏ hàng",
+    "detail": "MÔ TẢ",
+    "rating": "ĐÁNH GIÁ",
+    "information": "THÔNG TIN SẢN PHẨM",
+    "byCategory": "Theo loại",
+    "byPrice": "Theo giá",
+    "price": "Giá",
+    "filter": "Lọc",
+    "edit": "Sửa thông tin",
+    "update": "Cập nhật",
+    "checkout": "Tiến hành thanh toán",
+    "cart": "Giỏ hàng",
+    "order": "Đặt hàng"
+}

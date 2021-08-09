@@ -1,35 +1,87 @@
-import { Typography } from '@material-ui/core';
+import { yupResolver } from '@hookform/resolvers/yup';
+import {
+    Alert,
+    Button,
+    CircularProgress,
+    Divider,
+    Rating,
+    Stack,
+    Typography,
+} from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
-import TextField from '@material-ui/core/TextField';
-import SendIcon from '@material-ui/icons/Send';
-import { LoadingButton } from '@material-ui/lab';
+import StarIcon from '@material-ui/icons/Star';
 import TabContext from '@material-ui/lab/TabContext';
 import TabList from '@material-ui/lab/TabList';
 import TabPanel from '@material-ui/lab/TabPanel';
+import managementApi from 'api/managementApi';
+import { InputField } from 'components/FormFields';
+import { selectLoading, selectUserInfo } from 'features/User/userSlice';
+import { selectComment, vegetableActions } from 'features/Vegetables/vegetableSlice';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
-import RatingVegetable from './RatingVegetable';
+import * as yup from 'yup';
+import Comment from './Comment';
+
+const schema = yup.object().shape({
+    comment: yup
+        .string()
+        .min(5, 'Vui lòng điền ít nhất 5 ký tự')
+        .required('Vui lòng điền tên đăng nhập'),
+});
 
 const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) => {
     const { t } = useTranslation();
-    const [value, setValue] = useState('1');
+    const { search } = useLocation();
 
-    const [loading, setLoading] = useState(false);
+    const [valueTab, setValueTab] = useState('1');
+    const [error, setError] = useState('');
+    const [valueStart, setStart] = React.useState(2);
+    const [hoverStart, setHoverStart] = React.useState(-1);
+
+    const userInfo = useSelector(selectUserInfo);
+    const commentList = useSelector(selectComment);
+    const dispatch = useDispatch();
+
+    const {
+        control,
+        handleSubmit,
+        formState: { isSubmitting },
+    } = useForm({
+        resolver: yupResolver(schema),
+    });
 
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        setValueTab(newValue);
     };
 
-    function handleClick() {
-        setLoading(true);
-    }
+    useEffect(() => {
+        const id = search.split('=')[1];
+        dispatch(vegetableActions.fetchVegetableById(id));
+    }, [dispatch, isSubmitting]);
+
+    const handleComment = async (e) => {
+        setError('');
+        const formValue = {
+            vegetableId: search.split('=')[1],
+            content: e.comment,
+            name: userInfo.name,
+            rating: valueStart,
+            avatar: userInfo.avatar,
+        };
+        await managementApi.addComment(formValue);
+    };
+
+    const idCurrentUser = localStorage.getItem('access_token');
 
     return (
         <Box sx={{ width: '100%', minHeight: 600, typography: 'body1' }}>
-            <TabContext value={value}>
+            <TabContext value={valueTab}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label='lab API tabs example'>
                         <Tab label={t('detail')} value='1' />
@@ -59,60 +111,57 @@ const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) 
                     </Typography>
                 </TabPanel>
                 <TabPanel value='3'>
-                    <Typography variant='body1' gutterBottom>
-                        Chưa có đánh giá nào. Hãy là người đầu tiên nhận xét “{name}”
+                    {commentList.length <= 0 ? (
+                        <Typography variant='body1' gutterBottom>
+                            Chưa có đánh giá nào. Hãy là người đầu tiên nhận xét “{name}”
+                        </Typography>
+                    ) : (
+                        <Stack direction='column' spacing={2}>
+                            {commentList.map((comment) => (
+                                <Comment
+                                    key={uuid()}
+                                    name={comment.name}
+                                    comment={comment.content}
+                                    avatar={comment.avatar}
+                                    rating={comment.rating}
+                                    time={comment.createdAt}
+                                />
+                            ))}
+                        </Stack>
+                    )}
+                    <Divider sx={{ mt: 4 }} />
+                    <Typography variant='h6' gutterBottom>
+                        Đánh giá ngay
                     </Typography>
-                    <RatingVegetable />
-                    <Box
-                        component='form'
-                        sx={{
-                            '& > :not(style)': { m: 1, width: '100%' },
+                    <Rating
+                        name='hover-feedback'
+                        value={valueStart}
+                        precision={0.5}
+                        onChange={(event, newValue) => {
+                            setStart(newValue);
                         }}
-                        noValidate
-                        autoComplete='off'
-                    >
-                        <TextField
-                            required
-                            id='email'
-                            label='Nhận xét'
-                            helperText='Nhận xét của bạn'
-                            type='text'
-                            size='small'
-                            minRows={4}
+                        onChangeActive={(event, newHover) => {
+                            setHoverStart(newHover);
+                        }}
+                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />}
+                    />
+                    <form onSubmit={handleSubmit(handleComment)}>
+                        <InputField control={control} label='Nhận xét' name='comment' />
+
+                        {error && <Alert severity='error'>{error}</Alert>}
+
+                        <Button
                             fullWidth
-                            multiline
-                        />
-                        <TextField
-                            required
-                            id='nameClient'
-                            label='Tên'
-                            helperText='Tên của bạn'
-                            type='text'
-                            size='small'
-                            defaultValue=''
-                            fullWidth
-                        />
-                        <TextField
-                            required
-                            id='email'
-                            label='Email'
-                            helperText='Email của bạn'
-                            type='email'
-                            defaultValue='@gmail.com'
-                            size='small'
-                            fullWidth
-                        />
-                        <LoadingButton
-                            color='primary'
-                            onClick={handleClick}
-                            endIcon={<SendIcon />}
-                            loading={loading}
-                            loadingPosition='center'
+                            type='submit'
                             variant='contained'
+                            color='primary'
+                            disabled={!idCurrentUser || isSubmitting}
+                            sx={{ mr: 4 }}
                         >
+                            {isSubmitting && <CircularProgress size={16} color='primary' />}
                             {t('rating')}
-                        </LoadingButton>
-                    </Box>
+                        </Button>
+                    </form>
                 </TabPanel>
             </TabContext>
         </Box>
@@ -137,4 +186,4 @@ DetailVegetable.defaultProps = {
     sold: 0,
 };
 
-export default DetailVegetable;
+export default React.memo(DetailVegetable);

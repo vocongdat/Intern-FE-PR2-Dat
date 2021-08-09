@@ -1,12 +1,10 @@
-import { Box, CardMedia, Skeleton } from '@material-ui/core';
+import { Skeleton } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
-import ImageList from '@material-ui/core/ImageList';
-import ImageListItem from '@material-ui/core/ImageListItem';
+import { makeStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { v4 as uuid } from 'uuid';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles({
     imgStyle: {

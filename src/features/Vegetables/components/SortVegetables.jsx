@@ -64,6 +64,7 @@ const SortVegetables = () => {
         const params = {
             _page: 1,
             _limit: 12,
+            deletedAt_ne: true,
         };
 
         dispatch(vegetableActions.setClearFilter(params));

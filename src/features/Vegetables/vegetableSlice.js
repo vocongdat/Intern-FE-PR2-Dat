@@ -7,6 +7,7 @@ const initialState = {
     filter: {
         _page: 1,
         _limit: 12,
+        deletedAt_ne: true,
     },
     pagination: {
         _page: 1,
@@ -15,6 +16,8 @@ const initialState = {
     },
     category: [],
     vegetableByID: {},
+    comments: [],
+    favorite: [],
 };
 
 const vegetableSlice = createSlice({
@@ -64,6 +67,21 @@ const vegetableSlice = createSlice({
             state.loading = true;
         },
 
+        fetchFavoriteListByUser(state) {
+            state.loading = true;
+        },
+        fetchFavoriteListByUserSuccess(state, action) {
+            state.favorite = action.payload.body;
+            state.loading = false;
+        },
+        fetchFavoriteListByUserFailed(state) {
+            state.loading = true;
+        },
+
+        setComment(state, action) {
+            state.comments = action.payload.body;
+        },
+
         setFilterWithDebounce(state, action) {},
     },
 });
@@ -81,6 +99,8 @@ export const selectVegetablePagination = (state) => state.vegetable.pagination;
 export const selectCategories = (state) => state.vegetable.category;
 export const selectVegetableById = (state) => state.vegetable.vegetableByID;
 export const selectClear = (state) => state.vegetable.isClear;
+export const selectComment = (state) => state.vegetable.comments;
+export const selectFavorite = (state) => state.vegetable.favorite;
 
 // Reducer
 const vegetableReducer = reducer;

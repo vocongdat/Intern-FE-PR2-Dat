@@ -1,5 +1,5 @@
 import { Container, Grid } from '@material-ui/core';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import ContentVegetable from '../components/Detail/ContentVegetable';
@@ -60,4 +60,4 @@ const InfoVegetable = () => {
 
 InfoVegetable.propTypes = {};
 
-export default InfoVegetable;
+export default React.memo(InfoVegetable);

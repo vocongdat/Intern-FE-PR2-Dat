@@ -1,5 +1,6 @@
+import managementApi from 'api/managementApi';
 import vegetableApi from 'api/vegetableApi';
-import { call, debounce, put, takeLatest } from 'redux-saga/effects';
+import { all, call, debounce, put, takeLatest } from 'redux-saga/effects';
 import { vegetableActions } from './vegetableSlice';
 
 function* fetchVegetableList(action) {
@@ -20,10 +21,25 @@ function* fetchCategory(action) {
     }
 }
 
+function* fetchFavoriteListByUser(action) {
+    try {
+        const response = yield call(managementApi.getFavoriteByUser, action.payload);
+        yield put(vegetableActions.fetchFavoriteListByUserSuccess(response));
+    } catch (error) {
+        yield put(vegetableActions.fetchFavoriteListByUserFailed());
+    }
+}
+
 function* fetchVegetableById(action) {
     try {
-        const response = yield call(vegetableApi.getById, action.payload);
-        yield put(vegetableActions.fetchVegetableByIdSuccess(response));
+        const { vegetableInfo, commentList } = yield all({
+            vegetableInfo: call(vegetableApi.getById, action.payload),
+            commentList: call(managementApi.getCommentByVegetable, action.payload),
+        });
+        yield all([
+            put(vegetableActions.fetchVegetableByIdSuccess(vegetableInfo)),
+            put(vegetableActions.setComment(commentList)),
+        ]);
     } catch (error) {
         yield put(vegetableActions.fetchVegetableByIdFailed());
     }
@@ -39,6 +55,8 @@ export default function* vegetableSaga() {
     yield takeLatest(vegetableActions.fetchVegetableList, fetchVegetableList);
 
     yield takeLatest(vegetableActions.fetchVegetableById, fetchVegetableById);
+
+    yield takeLatest(vegetableActions.fetchFavoriteListByUser, fetchFavoriteListByUser);
 
     yield debounce(500, vegetableActions.setFilterWithDebounce.type, handleSearchDebounce);
 }
