@@ -1,45 +1,38 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-    Alert,
+    Avatar,
     Box,
     Button,
     CircularProgress,
-    Paper,
-    Typography,
     Link as MaterialLink,
+    Paper,
     Stack,
+    Typography,
 } from '@material-ui/core';
-import managementApi from 'api/managementApi';
 import { InputField } from 'components/FormFields';
-import { regex } from 'constants/index';
+import { Images, regex } from 'constants/index';
 import { HOME_PATH, LOGIN_PATH } from 'constants/path';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { history } from 'utils';
-import * as yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
+import * as Yup from 'yup';
+import { registerActions, selectorLoading } from './registerSlice';
 
-const schema = yup.object().shape({
-    user: yup
-        .string()
-        .matches(/^[a-z0-9_-]{3,15}$/, 'Tên user không được chứa dấy cách và kí tự tiếng việt')
-        .min(5, 'Vui lòng điền ít nhất 5 ký tự')
+const schema = Yup.object().shape({
+    registerUsername: Yup.string()
+        .matches(regex.username, 'Username không được chứa các kí tự đặc biệt, ít nhât 5 kí tự')
         .required('Vui lòng điền tên đăng nhập'),
-    fullName: yup
-        .string()
-        .required('Vui lòng điền họ và tên của bạn')
-        .test('two-words', 'Nhập họ và tên của bạn', (value) => {
-            if (!value) return true;
-
-            const parts = value?.split(' ') || [];
-            return parts.filter((x) => Boolean(x)).length >= 2;
-        }),
-    phone: yup
-        .string()
-        .matches(regex.phoneNumber, 'Vui lòng nhập đúng số điện thoại')
-        .required('Vui lòng điền số điện thoại của bạn'),
-    password: yup.string().min(4).max(15).required('Vui lòng nhập mật khẩu'),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), null]),
+    registerEmail: Yup.string().email('Vui lòng nhập email').required('Vui lòng nhập email'),
+    registerPassword: Yup.string()
+        .matches(
+            regex.password,
+            'Mật khẩu phải bao gồm chữ hoa, số và kí tự đặc biệt và ít nhất 10 kí tự'
+        )
+        .required('Vui lòng nhập mật khẩu'),
+    confirmPassword: Yup.string()
+        .oneOf([Yup.ref('registerPassword'), null], 'Passwords must match')
+        .required('Vui lòng nhập lại mật khẩu'),
 });
 
 const rootStyle = {
@@ -48,6 +41,7 @@ const rootStyle = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    background: `url(${Images.Blur_BG}) no-repeat center center/cover`,
     '& .MuiPaper-root': {
         justifyContent: 'center',
         alignItems: 'center',
@@ -55,8 +49,10 @@ const rootStyle = {
 };
 
 const Register = () => {
-    const [error, setError] = useState('');
-
+    const [openToast, setOpenToast] = useState(false);
+    const dispatch = useDispatch();
+    const loading = useSelector(selectorLoading);
+    const history = useHistory();
     const {
         control,
         handleSubmit,
@@ -66,31 +62,46 @@ const Register = () => {
     });
 
     const handleRegister = async (e) => {
-        setError('');
-        await managementApi.register(e);
-        if (isSubmitting === false) {
-            history.push(LOGIN_PATH);
-        }
+        dispatch(registerActions.register(e));
     };
     return (
         <Box sx={rootStyle}>
-            <Paper sx={{ maxWidth: 400, p: 4, bgcolor: 'rgba(0,0,0,0.07)' }}>
+            <Paper sx={{ maxWidth: 400, p: 4, bgcolor: 'hsla(0, 0%, 100%, 0.6)' }}>
                 <Stack direction='row' justifyContent='center' alignItems='center' spacing={2}>
-                    <Typography variant='h6' component='h2' compo gutterBottom noWrap>
+                    <Avatar
+                        alt='Farm Đà Lạc'
+                        src={Images.LOGO_GREEN}
+                        sx={{ width: 56 * 1.5, height: 56 }}
+                        variant='square'
+                    />
+                    <Typography
+                        variant='h5'
+                        component='h2'
+                        sx={{ fontWeight: 'bold' }}
+                        color='primary'
+                        compo
+                        gutterBottom
+                        noWrap
+                    >
                         Sign-up
                     </Typography>
                 </Stack>
                 <form onSubmit={handleSubmit(handleRegister)}>
-                    <InputField name='register_username' control={control} label='Username' />
-                    <InputField name='register_email' control={control} label='Email' />
                     <InputField
-                        name='register_password'
+                        name='registerUsername'
+                        control={control}
+                        label='Username'
+                        autoFocus
+                    />
+                    <InputField name='registerEmail' control={control} label='Email' />
+                    <InputField
+                        name='registerPassword'
                         control={control}
                         label='Password'
                         type='password'
                     />
                     <InputField
-                        name='confirm_password'
+                        name='confirmPassword'
                         control={control}
                         label='Confirm Password'
                         type='password'
@@ -98,13 +109,16 @@ const Register = () => {
 
                     <Typography gutterBottom>
                         {`By signing up you acknowledge you are 16 or older and accept FarmShop User `}
-                        <MaterialLink href={HOME_PATH} target='_blank'>
+                        <MaterialLink
+                            href={HOME_PATH}
+                            color='primary'
+                            sx={{ fontWeight: 400 }}
+                            target='_blank'
+                        >
                             Agreement & Privacy Policy
                         </MaterialLink>
                         .
                     </Typography>
-
-                    {error && <Alert severity='error'>{error}</Alert>}
 
                     <Button
                         fullWidth
@@ -114,15 +128,33 @@ const Register = () => {
                         disabled={isSubmitting}
                         sx={{ mr: 4 }}
                     >
-                        {isSubmitting && <CircularProgress size={16} color='primary' />}
+                        {loading && <CircularProgress size={16} color='primary' />}
                         Sign up now
                     </Button>
+                </form>
+                <Stack
+                    direction='row'
+                    justifyContent='center'
+                    alignItems='center'
+                    spacing={1}
+                    sx={{ mt: 2 }}
+                >
+                    <Typography variant='subtitle2' component='p'>
+                        Already have an account?
+                    </Typography>
                     <Link to={LOGIN_PATH} style={{ textDecoration: 'none' }}>
-                        <Button fullWidth variant='contained' color='primary'>
-                            Log in to your account
+                        <Button fullWidth variant='contained' sx={{ bgcolor: 'success.light' }}>
+                            Log in now
                         </Button>
                     </Link>
-                </form>
+                </Stack>
+                <Stack spacing={2} sx={{ width: '100%', mt: 2 }}>
+                    <Link to={HOME_PATH} style={{ textDecoration: 'none' }}>
+                        <Button variant='contained' fullWidth sx={{ bgcolor: 'warning.main' }}>
+                            Go to Home
+                        </Button>
+                    </Link>
+                </Stack>
             </Paper>
         </Box>
     );

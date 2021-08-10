@@ -1,41 +1,28 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    isLoggedIn: false,
-    logging: false,
-    currentUser: undefined,
+    loading: false,
 };
 
-const authSlice = createSlice({
-    name: 'user',
+const registerSlice = createSlice({
+    name: 'register',
     initialState,
     reducers: {
-        login(state, action) {
-            state.logging = true;
+        register(state, action) {
+            state.loading = true;
         },
-        loginSuccess(state, action) {
-            state.isLoggedIn = true;
-            state.logging = false;
-            state.currentUser = action.payload;
-        },
-        loginFailed(state, action) {
-            state.logging = false;
-        },
-
-        logout(state) {
-            state.isLoggedIn = false;
-            state.currentUser = undefined;
+        registerSuccess(state, action) {
+            state.loading = false;
         },
     },
 });
 
 // Actions
-export const authActions = authSlice.actions;
+export const registerActions = registerSlice.actions;
 
-// Selectors
-export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
-export const selectIsLogging = (state) => state.auth.logging;
+// Selector
+export const selectorLoading = (state) => state.register.loading;
 
 // Reducer
-const authReducer = authSlice.reducer;
-export default authReducer;
+const registerReducer = registerSlice.reducer;
+export default registerReducer;

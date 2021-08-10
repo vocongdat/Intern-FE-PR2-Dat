@@ -18,6 +18,7 @@ import {
     selectVegetablePagination,
     vegetableActions,
 } from '../vegetableSlice';
+import SearchProduct from './SearchProduct';
 
 const SortVegetables = () => {
     const [sortBy, setSortBy] = useState('normal');
@@ -105,59 +106,62 @@ const SortVegetables = () => {
     ];
 
     return (
-        <Box sx={{ minWidth: 120 }}>
-            <FormControl size='small' sx={{ minWidth: 180 }}>
-                <InputLabel id='sort-by-select-label'>Sắp xếp theo</InputLabel>
+        <>
+            <Box sx={{ minWidth: 120 }}>
+                <FormControl size='small' sx={{ minWidth: 180 }}>
+                    <InputLabel id='sort-by-select-label'>Sắp xếp theo</InputLabel>
 
-                <Select
-                    labelId='sort-by-select-label'
-                    id='simple-select'
-                    value={sortBy}
-                    label='Sắp xếp theo'
-                    onChange={handleSelectionChange}
+                    <Select
+                        labelId='sort-by-select-label'
+                        id='simple-select'
+                        value={sortBy}
+                        label='Sắp xếp theo'
+                        onChange={handleSelectionChange}
+                    >
+                        {sortList.map((itemSort) => (
+                            <MenuItem key={itemSort.id} value={itemSort.value}>
+                                {itemSort.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <ToggleButtonGroup
+                    value={sort}
+                    exclusive
+                    onChange={handleSort}
+                    aria-label='sort'
+                    sx={{ mx: 2 }}
                 >
-                    {sortList.map((itemSort) => (
-                        <MenuItem key={itemSort.id} value={itemSort.value}>
-                            {itemSort.name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
+                    <ToggleButton value='asc' size='small' aria-label='increase'>
+                        <NorthIcon />
+                    </ToggleButton>
 
-            <ToggleButtonGroup
-                value={sort}
-                exclusive
-                onChange={handleSort}
-                aria-label='sort'
-                sx={{ mx: 2 }}
-            >
-                <ToggleButton value='asc' size='small' aria-label='increase'>
-                    <NorthIcon />
-                </ToggleButton>
+                    <ToggleButton value='desc' size='small' aria-label='decrease'>
+                        <SouthIcon />
+                    </ToggleButton>
+                </ToggleButtonGroup>
 
-                <ToggleButton value='desc' size='small' aria-label='decrease'>
-                    <SouthIcon />
-                </ToggleButton>
-            </ToggleButtonGroup>
+                <Typography
+                    variant='h6'
+                    component='span'
+                    sx={{ textAlign: 'end', display: 'inline-flex', mr: 2 }}
+                    gutterBottom
+                >
+                    Hiển thi {vegetableList.length} kết quả trong {pagination._totalRow}
+                </Typography>
 
-            <Typography
-                variant='h6'
-                component='span'
-                sx={{ textAlign: 'end', display: 'inline-flex', mr: 2 }}
-                gutterBottom
-            >
-                Hiển thi {vegetableList.length} kết quả trong {pagination._totalRow}
-            </Typography>
-
-            <Button
-                variant='outlined'
-                color='error'
-                onClick={handleClearFilter}
-                sx={{ textAlign: 'end' }}
-            >
-                Xóa bộ lọc
-            </Button>
-        </Box>
+                <Button
+                    variant='outlined'
+                    color='error'
+                    onClick={handleClearFilter}
+                    sx={{ textAlign: 'end' }}
+                >
+                    Xóa bộ lọc
+                </Button>
+            </Box>
+            <SearchProduct />
+        </>
     );
 };
 

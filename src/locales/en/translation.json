@@ -20,5 +20,10 @@
     "update": "Update",
     "checkout": "Make a payment",
     "cart": "Cart",
-    "order": "Order"
+    "order": "Order",
+    "searchByName": "Search by name",
+    "profile": "Profile",
+    "orderHistory": "Order history",
+    "logout": "Logout",
+    "refresh": "refresh"
 }

@@ -1,46 +1,25 @@
+import managementApi from 'api/managementApi';
+import bcrypt from 'bcryptjs';
 import { push } from 'connected-react-router';
-import { call, delay, fork, put, take } from 'redux-saga/effects';
-import { authActions } from './authSlice';
+import { LOGIN_PATH } from 'constants/index';
+import { toast } from 'react-toastify';
+import { call, delay, put, takeLatest } from 'redux-saga/effects';
+import { registerActions } from './registerSlice';
 
-function* handleLogin() {
-    try {
-        yield delay(1000);
-
-        localStorage.setItem('access_token', 'fake_token');
-        yield put(
-            authActions.loginSuccess({
-                id: 1,
-                name: 'Easy Frontend',
-            })
-        );
-
-        yield put(push('/admin/dashboard'));
-    } catch (error) {
-        yield put(authActions.loginFailed(error.message));
-    }
+function* register(action) {
+    const { registerUsername, registerEmail, registerPassword } = action.payload;
+    const hashedPassword = yield bcrypt.hash(registerPassword, 12);
+    const formValueHash = {
+        user: registerUsername,
+        email: registerEmail,
+        password: hashedPassword,
+    };
+    yield call(managementApi.register, formValueHash);
+    delay(500);
+    yield put(push(LOGIN_PATH));
+    toast.success('Đăng kí thành công !');
 }
 
-function* handleLogout() {
-    yield delay(500);
-    localStorage.removeItem('access_token');
-    // redirect to login page
-    yield put(push('/login'));
-}
-
-function* watchLoginFlow() {
-    while (true) {
-        const isLoggedIn = Boolean(localStorage.getItem('access_token'));
-
-        if (!isLoggedIn) {
-            const action = yield take(authActions.login.type);
-            yield fork(handleLogin, action.payload);
-        }
-
-        yield take(authActions.logout.type);
-        yield call(handleLogout);
-    }
-}
-
-export default function* authSaga() {
-    yield fork(watchLoginFlow);
+export default function* registerSaga() {
+    yield takeLatest(registerActions.register, register);
 }

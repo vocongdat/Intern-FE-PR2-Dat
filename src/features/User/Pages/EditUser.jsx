@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as yup from 'yup';
-import { selectLoading, selectUserInfo } from '../userSlice';
+import { selectLoading, selectUserInfo, userActions } from '../userSlice';
 
 const schema = yup.object().shape({
     name: yup.string(),
@@ -35,7 +35,6 @@ const dividerStyle = {
 
 const EditUser = () => {
     const dispatch = useDispatch();
-    const loading = useSelector(selectLoading);
     const userInfo = useSelector(selectUserInfo);
     const userId = localStorage.getItem('access_token');
 
@@ -65,6 +64,7 @@ const EditUser = () => {
 
     const handleFormSubmit = async (e) => {
         await managementApi.updateUser(e);
+        dispatch(userActions.fetchUser(userId));
         setOpenAlert(true);
     };
     const {
@@ -119,12 +119,6 @@ const EditUser = () => {
                             <Stack direction='row' spacing={2} justifyContent='space-between'>
                                 <Typography sx={labelStyle}>Tên đăng nhập:</Typography>
                                 <InputField name='user' control={control} label='UserName' />
-                            </Stack>
-
-                            <Divider light flexItem sx={dividerStyle} />
-                            <Stack direction='row' spacing={2} justifyContent='space-between'>
-                                <Typography sx={labelStyle}>Mật khẩu:</Typography>
-                                <InputField name='password' control={control} label='Password' />
                             </Stack>
 
                             <Divider light flexItem sx={dividerStyle} />

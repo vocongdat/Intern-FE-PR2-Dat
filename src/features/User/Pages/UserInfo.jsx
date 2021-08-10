@@ -9,7 +9,6 @@ import { selectLoading, selectUserInfo, userActions } from '../userSlice';
 
 const UserInfo = () => {
     const dispatch = useDispatch();
-    const loading = useSelector(selectLoading);
     const userInfo = useSelector(selectUserInfo);
     const userId = localStorage.getItem('access_token');
     const { t } = useTranslation();
@@ -33,33 +32,38 @@ const UserInfo = () => {
                 </Link>
                 <Stack direction='column' spacing={2}>
                     <Stack direction='row' spacing={2} justifyContent='space-between'>
+                        <Typography>Họ và tên</Typography>
+                        <Typography>{userInfo.name}</Typography>
+                    </Stack>
+                    <Divider light />
+
+                    <Stack direction='row' spacing={2} justifyContent='space-between'>
                         <Typography>Email:</Typography>
                         <Typography>{userInfo.email}</Typography>
                     </Stack>
                     <Divider light />
+
                     <Stack direction='row' spacing={2} justifyContent='space-between'>
-                        <Typography>User:</Typography>
+                        <Typography>Username:</Typography>
                         <Typography>{userInfo.user}</Typography>
                     </Stack>
                     <Divider light />
+
                     <Stack direction='row' spacing={2} justifyContent='space-between'>
                         <Typography>Số điện thoại:</Typography>
                         <Typography>{userInfo.phone}</Typography>
                     </Stack>
                     <Divider light />
+
                     <Stack direction='row' spacing={2} justifyContent='space-between'>
                         <Typography>Địa chỉ nhận hàng:</Typography>
                         <Typography>{userInfo.address}</Typography>
                     </Stack>
                     <Divider light />
+
                     <Stack direction='row' spacing={2} justifyContent='space-between'>
                         <Typography>Ngày tạo tài khoản:</Typography>
                         <Typography>{userInfo.createdAt}</Typography>
-                    </Stack>
-                    <Divider light />
-                    <Stack direction='row' spacing={2} justifyContent='space-between'>
-                        <Typography>Mật khẩu:</Typography>
-                        <Typography>{userInfo.password}</Typography>
                     </Stack>
                 </Stack>
             </Stack>

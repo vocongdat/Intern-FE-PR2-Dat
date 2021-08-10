@@ -62,25 +62,28 @@ const CardProduct = ({ vegetableInfo }) => {
         setQuickView(false);
     };
 
+    const idUser = localStorage.getItem('access_token');
+
     const handleAddToCart = async () => {
-        setIsStatusNotify(true);
-        const valueForm = {
-            userId: idCurrentUser,
-            quantity: 1,
-            price,
-            slug,
-            image: images[0],
-            name,
-            vegetableId: id,
-        };
-        await cartApi.add(valueForm);
+        if (!idUser) setIsAlert(true);
+        else setIsStatusNotify(true);
+        if (!isLike) {
+            const valueForm = {
+                userId: idCurrentUser,
+                quantity: 1,
+                price,
+                slug,
+                image: images[0],
+                name,
+                vegetableId: id,
+            };
+            await cartApi.add(valueForm);
+        }
     };
 
     const handleCloseAlert = () => {
         setIsAlert(false);
     };
-
-    const idUser = localStorage.getItem('access_token');
 
     const handleAddToWish = async () => {
         if (!idUser) setIsAlert(true);

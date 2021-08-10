@@ -20,5 +20,10 @@
     "update": "Cập nhật",
     "checkout": "Tiến hành thanh toán",
     "cart": "Giỏ hàng",
-    "order": "Đặt hàng"
+    "order": "Đặt hàng",
+    "searchByName": "Tìm theo tên",
+    "profile": "Thông tin cá nhân",
+    "orderHistory": "Lịch sử đặt hàng",
+    "logout": "Đăng xuất",
+    "refresh": "Làm mới"
 }
