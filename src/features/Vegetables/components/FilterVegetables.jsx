@@ -5,20 +5,33 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { selectCategories, selectVegetableFilter, vegetableActions } from '../vegetableSlice';
+import { useHistory, useLocation } from 'react-router-dom';
+import { PRODUCT_PATH } from 'constants/index';
+import {
+    selectCategories,
+    selectClear,
+    selectVegetableFilter,
+    vegetableActions,
+} from '../vegetableSlice';
 import SliderCash from './SliderCash';
 
 const FilterVegetables = () => {
     const { t } = useTranslation();
+    const { search } = useLocation();
+    const history = useHistory();
     const categoryList = useSelector(selectCategories);
-    const [selectedIndex, setSelectedIndex] = useState('');
     const filter = useSelector(selectVegetableFilter);
+    const [selectedIndex, setSelectedIndex] = useState(filter.q || '');
+    const isClear = useSelector(selectClear);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(vegetableActions.fetchCategory());
-    }, [filter]);
+        if (!isClear) {
+            setSelectedIndex('');
+        }
+    }, [filter, isClear]);
 
     const handleListItemClick = (event, id) => {
         setSelectedIndex(id);
@@ -27,6 +40,9 @@ const FilterVegetables = () => {
             _page: 1,
             q: id,
         };
+        if (search) {
+            history.push(PRODUCT_PATH);
+        }
         dispatch(vegetableActions.setFilter(params));
     };
 
@@ -58,7 +74,7 @@ const FilterVegetables = () => {
                 ))}
             </List>
 
-            <SliderCash />
+            {search ? '' : <SliderCash />}
         </Box>
     );
 };

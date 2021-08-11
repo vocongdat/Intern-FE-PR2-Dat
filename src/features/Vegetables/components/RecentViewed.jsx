@@ -1,42 +1,39 @@
-import { Grid } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import CardProduct from 'components/Common/Client/CardProduct';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    selectVegetableFilter,
-    selectVegetableList,
-    selectVegetableLoading,
-    vegetableActions,
-} from '../vegetableSlice';
+import { selectVegetableFilter, selectVegetableLoading, vegetableActions } from '../vegetableSlice';
 
 const gridCardStyle = {
     my: 4,
-    mx: 'auto',
-    position: 'relative',
 };
 
 const RecentViewed = () => {
-    const vegetableList = useSelector(selectVegetableList);
+    const dispatch = useDispatch();
+    const vegetableRecent = JSON.parse(localStorage.getItem('vegetableRecent'));
+
     const loading = useSelector(selectVegetableLoading);
     const filter = useSelector(selectVegetableFilter);
-
-    const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(vegetableActions.fetchVegetableList(filter));
     }, [dispatch, filter]);
 
     return (
-        <Grid container spacing={3} sx={gridCardStyle}>
-            {vegetableList.map((vegetableInfo) => (
-                <Grid item xs={3} key={vegetableInfo.id}>
-                    <CardProduct vegetableInfo={vegetableInfo} />
-                </Grid>
-            ))}
-        </Grid>
+        <Paper>
+            <Typography variant='h5' sx={{ textAlign: 'center' }}>
+                Sản phẩm xem gần đây
+            </Typography>
+
+            <Grid container spacing={3} sx={gridCardStyle}>
+                {vegetableRecent.map((vegetableInfo) => (
+                    <Grid item xs={3} key={vegetableInfo.id}>
+                        <CardProduct vegetableInfo={vegetableInfo} />
+                    </Grid>
+                ))}
+            </Grid>
+        </Paper>
     );
 };
-
-RecentViewed.propTypes = {};
 
 export default RecentViewed;

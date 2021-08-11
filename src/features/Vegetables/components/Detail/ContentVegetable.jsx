@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { formatNumber } from 'utils';
 import { v4 as uuid } from 'uuid';
 import Sharing from './Sharing';
 
@@ -35,7 +36,7 @@ const ContentVegetable = ({ name, price, weight, category, loading }) => {
                         {name}
                     </Typography>
                     <Typography variant='h4' component='p' color='primary.light' gutterBottom>
-                        {price}.000 đ
+                        {formatNumber(price)}.000 đ
                     </Typography>
                 </>
             )}
@@ -96,10 +97,38 @@ const ContentVegetable = ({ name, price, weight, category, loading }) => {
             </Box>
 
             <Divider sx={{ my: 2 }} />
-
-            <Typography variant='subtitle1' component='p' gutterBottom>
-                {`${t('category')}: ${category}`}
-            </Typography>
+            <Stack
+                direction='row'
+                justifyContent='space-between'
+                alignItems='center'
+                spacing={2}
+                sx={{ my: 2 }}
+            >
+                <Typography
+                    variant='subtitle1'
+                    component='p'
+                    gutterBottom
+                    sx={{ textTransform: 'uppercase', fontWeight: 500 }}
+                >
+                    SKU
+                </Typography>
+                <Typography variant='subtitle1' component='p' gutterBottom>
+                    N/A
+                </Typography>
+            </Stack>
+            <Stack direction='row' justifyContent='space-between' alignItems='center' spacing={2}>
+                <Typography
+                    variant='subtitle1'
+                    component='p'
+                    gutterBottom
+                    sx={{ textTransform: 'uppercase', fontWeight: 500 }}
+                >
+                    {t('category')}
+                </Typography>
+                <Typography variant='subtitle1' component='p' gutterBottom>
+                    {category}
+                </Typography>
+            </Stack>
 
             <Sharing />
         </Box>

@@ -10,17 +10,23 @@ const Sharing = () => {
     return (
         <Box
             sx={{
+                mt: 2,
                 flexDirection: 'row',
                 display: 'inline-flex',
                 justifyContent: 'space-between',
-                width: '80%',
+                width: '100%',
                 '& .MuiLink-root:hover': {
                     color: 'primary.main',
                     transition: 'all 0.5s',
                 },
             }}
         >
-            <Typography variant='subtitle' component='span' gutterBottom>
+            <Typography
+                variant='subtitle'
+                component='span'
+                sx={{ textTransform: 'uppercase', fontWeight: 500 }}
+                gutterBottom
+            >
                 {t('sharing')}
             </Typography>
             <Stack direction='row' spacing={2}>

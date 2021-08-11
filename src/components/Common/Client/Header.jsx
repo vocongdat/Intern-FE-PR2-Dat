@@ -7,6 +7,7 @@ import {
     MenuItem,
     Paper,
     Skeleton,
+    Stack,
     Toolbar,
 } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
@@ -36,7 +37,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, Redirect } from 'react-router-dom';
+import { Link, NavLink, Redirect, useHistory } from 'react-router-dom';
 import MultiLanguage from './MultiLanguage';
 
 const useStyles = makeStyles({
@@ -71,6 +72,7 @@ const Header = () => {
     const { t } = useTranslation();
     const classes = useStyles();
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -96,7 +98,10 @@ const Header = () => {
 
     const handleLogoutClick = () => {
         dispatch(authActions.logout());
-        <Redirect push to={LOGIN_PATH} />;
+    };
+
+    const handleRedirects = (path) => {
+        history.push(path);
     };
 
     const menuId = 'primary-search-account-menu';
@@ -212,21 +217,24 @@ const Header = () => {
                         ))}
                     </Box>
 
-                    <Box className={classes.sectionDesktop}>
+                    <Stack direction='row' justifyContent='center' alignItems='center' spacing={2}>
                         <MultiLanguage />
-                        <IconButton aria-label='show favorite product'>
-                            <Badge badgeContent={favoriteList.length} color='error'>
-                                <Link to={WISHLIST_PATH}>
-                                    <FavoriteIcon color='red' />
-                                </Link>
+                        <IconButton
+                            aria-label='show favorite product'
+                            onClick={() => handleRedirects(WISHLIST_PATH)}
+                        >
+                            <Badge badgeContent={favoriteList.length} color='primary'>
+                                <FavoriteIcon color='action' />
                             </Badge>
                         </IconButton>
 
-                        <IconButton aria-label='show count product in cart' sx={{ mr: 2 }}>
-                            <Badge badgeContent={100} color='success'>
-                                <Link to={CART_CHECKOUT_PATH}>
-                                    <ShoppingCartIcon />
-                                </Link>
+                        <IconButton
+                            aria-label='show count product in cart'
+                            onClick={() => handleRedirects(CART_CHECKOUT_PATH)}
+                            sx={{ mr: 2 }}
+                        >
+                            <Badge badgeContent={100} color='primary'>
+                                <ShoppingCartIcon color='action' />
                             </Badge>
                         </IconButton>
                         {idCurrentUser ? (
@@ -251,7 +259,12 @@ const Header = () => {
                                 )}
                             </IconButton>
                         ) : (
-                            <>
+                            <Stack
+                                direction='row'
+                                justifyContent='center'
+                                alignItems='center'
+                                spacing={2}
+                            >
                                 <Link to={REGISTER_PATH} className={classes.button}>
                                     <Button size='small' variant='outlined' color='primary'>
                                         Register
@@ -262,9 +275,9 @@ const Header = () => {
                                         Login
                                     </Button>
                                 </Link>
-                            </>
+                            </Stack>
                         )}
-                    </Box>
+                    </Stack>
                 </Toolbar>
             </AppBar>
             {renderMenu}

@@ -155,6 +155,7 @@ const SortVegetables = () => {
                     variant='outlined'
                     color='error'
                     onClick={handleClearFilter}
+                    disabled={!isClear}
                     sx={{ textAlign: 'end' }}
                 >
                     Xóa bộ lọc

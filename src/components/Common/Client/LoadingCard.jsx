@@ -3,7 +3,7 @@ import Stack from '@material-ui/core/Stack';
 
 const LoadingCard = () => (
     <Stack spacing={1}>
-        <Skeleton variant='rectangular' height={250} />
+        <Skeleton variant='rectangular' height={174} />
         <Skeleton variant='text' />
         <Skeleton variant='text' />
     </Stack>

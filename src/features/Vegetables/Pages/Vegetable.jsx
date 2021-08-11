@@ -1,6 +1,7 @@
 import { Container, Grid } from '@material-ui/core';
 import React from 'react';
 import FilterVegetables from '../components/FilterVegetables';
+import RecentViewed from '../components/RecentViewed';
 import VegetableList from '../components/VegetableList';
 
 const Vegetable = () => (
@@ -11,6 +12,9 @@ const Vegetable = () => (
             </Grid>
             <Grid item xs={9}>
                 <VegetableList />
+            </Grid>
+            <Grid item xs={12}>
+                <RecentViewed />
             </Grid>
         </Grid>
     </Container>

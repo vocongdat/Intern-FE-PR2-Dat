@@ -6,6 +6,7 @@ import ContentVegetable from '../components/Detail/ContentVegetable';
 import DetailVegetable from '../components/Detail/DetailVegetable';
 import ImageVegetable from '../components/Detail/ImageVegetable';
 import FilterVegetables from '../components/FilterVegetables';
+import RecentViewed from '../components/RecentViewed';
 import { selectVegetableById, selectVegetableLoading, vegetableActions } from '../vegetableSlice';
 
 const InfoVegetable = () => {
@@ -14,11 +15,13 @@ const InfoVegetable = () => {
 
     const vegetableInfo = useSelector(selectVegetableById);
     const loading = useSelector(selectVegetableLoading);
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
     useEffect(() => {
         const id = search.split('=')[1];
         dispatch(vegetableActions.fetchVegetableById(id));
-    }, [dispatch]);
+        scrollToTop();
+    }, [dispatch, search]);
 
     return (
         <Container maxWidth='lg'>
@@ -52,6 +55,9 @@ const InfoVegetable = () => {
                             />
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                    <RecentViewed />
                 </Grid>
             </Grid>
         </Container>

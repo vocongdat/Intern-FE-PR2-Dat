@@ -6,7 +6,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import { useTranslation } from 'react-i18next';
-import { selectVegetableFilter, vegetableActions } from '../vegetableSlice';
+import { selectClear, selectVegetableFilter, vegetableActions } from '../vegetableSlice';
 
 const SearchProduct = () => {
     const searchRef = React.useRef();

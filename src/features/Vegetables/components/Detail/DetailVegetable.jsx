@@ -24,6 +24,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { v4 as uuid } from 'uuid';
 import * as yup from 'yup';
 import Comment from './Comment';
@@ -48,21 +49,28 @@ const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) 
     const commentList = useSelector(selectComment);
     const dispatch = useDispatch();
 
-    const {
-        control,
-        handleSubmit,
-        formState: { isSubmitting },
-    } = useForm({
-        resolver: yupResolver(schema),
-    });
-
     const handleChange = (event, newValue) => {
         setValueTab(newValue);
     };
 
+    const initialValues = {
+        comment: '',
+    };
+
+    const {
+        control,
+        reset,
+        handleSubmit,
+        formState: { isSubmitting },
+    } = useForm({
+        defaultValues: initialValues,
+        resolver: yupResolver(schema),
+    });
+
     useEffect(() => {
         const id = search.split('=')[1];
         dispatch(vegetableActions.fetchVegetableById(id));
+        reset(initialValues);
     }, [dispatch, isSubmitting]);
 
     const handleComment = async (e) => {
@@ -146,7 +154,12 @@ const DetailVegetable = ({ name, description, weight, quantity, viewed, sold }) 
                         emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />}
                     />
                     <form onSubmit={handleSubmit(handleComment)}>
-                        <InputField control={control} label='Nhận xét' name='comment' />
+                        <InputField
+                            control={control}
+                            defaultValue=''
+                            label='Nhận xét'
+                            name='comment'
+                        />
 
                         {error && <Alert severity='error'>{error}</Alert>}
 

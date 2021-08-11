@@ -14,8 +14,8 @@ import cartApi from 'api/cartApit';
 import favoriteApi from 'api/favoriteApi';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { formatNumber } from 'utils/common';
+import { Link, useHistory } from 'react-router-dom';
+import { formatNumber } from 'utils/index';
 import { SnackbarsNotify } from '.';
 import PopupQuickView from './PopupQuickView';
 
@@ -49,6 +49,7 @@ const CardProduct = ({ vegetableInfo }) => {
     const { id, name, images, price, slug } = vegetableInfo;
     const formatPrice = formatNumber(price);
     const [isAlert, setIsAlert] = useState(false);
+    const history = useHistory();
 
     const [quickView, setQuickView] = useState(false);
     const [isStatusNotify, setIsStatusNotify] = useState(false);
@@ -107,6 +108,23 @@ const CardProduct = ({ vegetableInfo }) => {
         setIsStatusNotify(false);
     };
 
+    const handleRedirect = () => {
+        history.push(`/products/${slug}?id=${id}`);
+        const vegetableRecent = JSON.parse(localStorage.getItem('vegetableRecent'));
+        if (!vegetableRecent) {
+            localStorage.setItem('vegetableRecent', JSON.stringify([vegetableInfo]));
+        } else {
+            const newVegetable = vegetableRecent.filter((item) => item.id !== vegetableInfo.id);
+            newVegetable.unshift(vegetableInfo);
+            if (newVegetable.length > 4) {
+                newVegetable.pop();
+                localStorage.setItem('vegetableRecent', JSON.stringify(newVegetable));
+            } else {
+                localStorage.setItem('vegetableRecent', JSON.stringify(newVegetable));
+            }
+        }
+    };
+
     return (
         <>
             <Card sx={cartStyle} onDoubleClick={() => handleAddToCart()}>
@@ -141,11 +159,9 @@ const CardProduct = ({ vegetableInfo }) => {
                 </CardActionArea>
                 <CardActions sx={cardActionStyle}>
                     <Tooltip title='Lựa chọn các tùy chọn' placement='top' arrow>
-                        <Link to={`/products/${slug}?id=${id}`}>
-                            <IconButton sx={{ color: 'white' }}>
-                                <FormatListBulletedIcon color='white' />
-                            </IconButton>
-                        </Link>
+                        <IconButton sx={{ color: 'white' }} onClick={() => handleRedirect()}>
+                            <FormatListBulletedIcon color='white' />
+                        </IconButton>
                     </Tooltip>
 
                     <Tooltip title='Thêm vào danh sách yêu thích' placement='top' arrow>

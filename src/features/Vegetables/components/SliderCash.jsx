@@ -48,7 +48,7 @@ const SliderCash = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setValue([0, 500]);
+        if (!isClear) setValue([0, 500]);
     }, [isClear]);
 
     const handleChange = (event, newValue, activeThumb) => {
@@ -96,11 +96,22 @@ const SliderCash = () => {
                 max={500}
             />
 
-            <Button variant='outlined' color='success' onClick={handleFilterByRangePrice}>
+            <Button
+                variant='outlined'
+                size='small'
+                color='success'
+                onClick={handleFilterByRangePrice}
+            >
                 {t('filter')}
             </Button>
 
-            <Typography variant='body2' component='span' sx={{ ml: 1, fontSize: 13 }} gutterBottom>
+            <Typography
+                variant='body2'
+                noWrap
+                component='span'
+                sx={{ ml: 1, fontSize: 13 }}
+                gutterBottom
+            >
                 {t('price')} {value[0]}.000 đ — {value[1]}.000 đ
             </Typography>
         </Box>
