@@ -55,7 +55,7 @@ const Customer = () => {
     const clientInfo = [
         {
             review: "I'm absolutely thrilled with the beautiful produce. What a treat to find your box at our door. It means the world to my kids and me. Thank you so much for the delicious fruits and veggies!",
-            avatar: 'https://images.generated.photos/dS2CnibEnp8MUu3NXuNTwQlrY8MvGY1ZWPtLYMV818U/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAyODU2NTAuanBn.jpg',
+            avatar: 'https://images.generated.photos/LXkYzbMllhb8LkMAp3wE686Oe_sRaCnUOVa0Xewb8_s/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MTY3NDM1LmpwZw.jpg',
             firstName: 'LESLIE',
             tagline: 'Accountant, USA',
             id: uuid(),
@@ -69,7 +69,7 @@ const Customer = () => {
         },
         {
             review: 'Since we have started receiving your produce my children are eating lots more carrots. It is because your carrots taste so much better than the kind we were getting in the grocery store.',
-            avatar: 'https://images.generated.photos/vTmFrFnTjh2LN3YFS7ujL97MQaKM9d4bf70lhkTLdP4/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAyNTMzMDguanBn.jpg',
+            avatar: 'https://images.generated.photos/MJhWEGA7wPU2aCQT5cARyvrL5K8phAzH7PgFKrZUUD0/rs:fit:512:512/wm:0.95:sowe:18:18:0.33/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/MDI5MzAyLmpwZw.jpg',
             firstName: 'KENNE',
             tagline: 'Manager, USA',
             id: uuid(),

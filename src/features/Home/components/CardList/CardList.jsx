@@ -3,9 +3,11 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import cartApi from 'api/cartApit';
 import { SnackbarsNotify } from 'components/Common/Client/index';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { formatNumber } from 'utils/common';
 import { v4 as uuid } from 'uuid';
 
@@ -31,14 +33,53 @@ const cartStyle = {
 };
 
 const CardList = ({ vegetableInfo }) => {
-    const { name, images, price, slug, categoryName } = vegetableInfo;
+    const { id, name, images, price, categoryName, slug } = vegetableInfo;
 
     const [open, setOpen] = useState(false);
 
     const formatPrice = formatNumber(price);
+    const idCurrentUser = localStorage.getItem('access_token');
 
-    const handleAddToCart = () => {
-        setOpen(true);
+    const handleAddToCart = async () => {
+        const cartList = JSON.parse(localStorage.getItem('cartList')) || [];
+        if (!idCurrentUser) setOpen(true);
+        else {
+            const valueForm = {
+                userId: idCurrentUser,
+                quantity: 1,
+                price,
+                slug,
+                image: images[0],
+                name,
+                vegetableId: id,
+            };
+            let newCartList = [];
+            const result = cartList.find((vegetable) => vegetable.vegetableId === id);
+            if (result) {
+                const newResult = {
+                    ...result,
+                    quantity: result.quantity + 1,
+                };
+                const cartRemaining = cartList.filter((info) => info.vegetableId !== id);
+                newCartList = [newResult, ...cartRemaining];
+            } else {
+                newCartList = [valueForm, ...cartList];
+            }
+
+            localStorage.setItem('cartList', JSON.stringify(newCartList));
+            if (newCartList.length > 0) {
+                const total = newCartList.reduce((acc, cur) => acc + cur.quantity, 0);
+                localStorage.setItem('countCart', total);
+            }
+            toast.success(`Thêm thành công "${name}" vào giỏ hàng`);
+
+            const updateCartServer = {
+                userId: idCurrentUser,
+                list: newCartList,
+            };
+
+            await cartApi.add(updateCartServer);
+        }
     };
     const handleClose = () => {
         setOpen(false);

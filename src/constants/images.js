@@ -3,6 +3,7 @@ import logoGreen from 'assets/images/WebLogoGreen_Vietponics.png';
 import logoWhite from 'assets/images/WebLogoWhite_Vietponics.png';
 import greenBackground from 'assets/images/bg_02.jpg';
 import featuredProduct from 'assets/images/featured_product.png';
+import bgBlur from 'assets/images/bg_blur.jpg';
 
 import payment from 'assets/images/footer_payment.png';
 
@@ -37,6 +38,7 @@ const Images = {
     INTRODUCE: introduce,
     GREEN_BG: greenBackground,
     FEATURED_BG: featuredProduct,
+    Blur_BG: bgBlur,
 };
 
 const IntroImage = [

@@ -29,6 +29,7 @@ const Title = ({ header, subHeader }) => (
         >
             {header}
         </Typography>
+
         <Typography
             variant='h3'
             component='h2'

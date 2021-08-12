@@ -1,11 +1,15 @@
 import { LOGIN_PATH } from 'constants/index';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const PrivateRoute = (props) => {
     const isLoggedIn = Boolean(localStorage.getItem('access_token'));
     const isAdmin = Boolean(localStorage.getItem('isAdmin'));
+    const history = useHistory();
 
-    if (!isAdmin || !isLoggedIn) return <Redirect to={LOGIN_PATH} />;
+    if (!isAdmin || !isLoggedIn) {
+        return history.goForward();
+    }
 
     return <Route {...props} />;
 };

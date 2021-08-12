@@ -1,7 +1,6 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-
-import { HOME_PATH, PRODUCT_PATH, BLOGS_PATH, CONTACT_PATH, WISHLIST_PATH } from './path';
+import { BLOGS_PATH, CONTACT_PATH, HOME_PATH, PRODUCT_PATH } from './path';
 
 const Home = React.lazy(() => import('features/Home/pages/HomePage'));
 const Vegetables = React.lazy(() => import('features/Vegetables'));

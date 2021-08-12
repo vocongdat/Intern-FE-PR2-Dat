@@ -32,12 +32,11 @@ import {
 } from 'constants/index';
 import { authActions } from 'features/auth/authSlice';
 import { selectLoading, selectUserInfo, userActions } from 'features/User/userSlice';
-import { selectFavorite } from 'features/Vegetables/vegetableSlice';
 import * as React from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, Redirect, useHistory } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import MultiLanguage from './MultiLanguage';
 
 const useStyles = makeStyles({
@@ -81,10 +80,22 @@ const Header = () => {
         setAnchorEl(event.currentTarget);
     };
 
+    const [favoriteCount, setFavoriteCount] = useState(0);
+    const [cartCount, setCartCount] = useState(0);
+
     const idCurrentUser = localStorage.getItem('access_token');
     const loading = useSelector(selectLoading);
     const userInfo = useSelector(selectUserInfo);
-    const favoriteList = useSelector(selectFavorite);
+
+    React.useEffect(() => {
+        const favorite = setInterval(
+            () => setFavoriteCount(localStorage.getItem('favoriteLength') || 0),
+            2000
+        );
+        const cart = setInterval(() => setCartCount(localStorage.getItem('countCart') || 0), 2000);
+
+        return () => clearInterval(favorite, cart);
+    }, []);
 
     React.useEffect(async () => {
         if (idCurrentUser) {
@@ -223,7 +234,7 @@ const Header = () => {
                             aria-label='show favorite product'
                             onClick={() => handleRedirects(WISHLIST_PATH)}
                         >
-                            <Badge badgeContent={favoriteList.length} color='primary'>
+                            <Badge badgeContent={favoriteCount} color='primary'>
                                 <FavoriteIcon color='action' />
                             </Badge>
                         </IconButton>
@@ -233,7 +244,7 @@ const Header = () => {
                             onClick={() => handleRedirects(CART_CHECKOUT_PATH)}
                             sx={{ mr: 2 }}
                         >
-                            <Badge badgeContent={100} color='primary'>
+                            <Badge badgeContent={cartCount} color='primary'>
                                 <ShoppingCartIcon color='action' />
                             </Badge>
                         </IconButton>

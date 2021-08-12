@@ -15,6 +15,7 @@ import favoriteApi from 'api/favoriteApi';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { formatNumber } from 'utils/index';
 import { SnackbarsNotify } from '.';
 import PopupQuickView from './PopupQuickView';
@@ -63,12 +64,10 @@ const CardProduct = ({ vegetableInfo }) => {
         setQuickView(false);
     };
 
-    const idUser = localStorage.getItem('access_token');
-
     const handleAddToCart = async () => {
-        if (!idUser) setIsAlert(true);
-        else setIsStatusNotify(true);
-        if (!isLike) {
+        const cartList = JSON.parse(localStorage.getItem('cartList')) || [];
+        if (!idCurrentUser) setIsAlert(true);
+        else {
             const valueForm = {
                 userId: idCurrentUser,
                 quantity: 1,
@@ -78,7 +77,32 @@ const CardProduct = ({ vegetableInfo }) => {
                 name,
                 vegetableId: id,
             };
-            await cartApi.add(valueForm);
+            let newCartList = [];
+            const result = cartList.find((vegetable) => vegetable.vegetableId === id);
+            if (result) {
+                const newResult = {
+                    ...result,
+                    quantity: Number(result.quantity) + 1,
+                };
+                const cartRemaining = cartList.filter((info) => info.vegetableId !== id);
+                newCartList = [newResult, ...cartRemaining];
+            } else {
+                newCartList = [valueForm, ...cartList];
+            }
+
+            localStorage.setItem('cartList', JSON.stringify(newCartList));
+            if (newCartList.length > 0) {
+                const total = newCartList.reduce((acc, cur) => acc + Number(cur.quantity), 0);
+                localStorage.setItem('countCart', total);
+            }
+            toast.success(`Thêm thành công "${name}" vào giỏ hàng`);
+
+            const updateCartServer = {
+                userId: idCurrentUser,
+                list: newCartList,
+            };
+
+            await cartApi.add(updateCartServer);
         }
     };
 
@@ -87,22 +111,45 @@ const CardProduct = ({ vegetableInfo }) => {
     };
 
     const handleAddToWish = async () => {
-        if (!idUser) setIsAlert(true);
+        const favoriteList = JSON.parse(localStorage.getItem('favorite')) || [];
+        if (!idCurrentUser) setIsAlert(true);
         else setIsLike(!isLike);
         if (!isLike) {
             const valueFavorite = {
-                userId: idUser,
+                userId: idCurrentUser,
                 vegetableId: id,
                 name,
                 price,
                 slug,
                 image: images[0],
             };
-            await favoriteApi.add(valueFavorite);
+
+            const newFavoriteList = [valueFavorite, ...favoriteList];
+            localStorage.setItem('favorite', JSON.stringify(newFavoriteList));
+            localStorage.setItem('favoriteLength', newFavoriteList.length);
+            toast.success(`Thêm thành công "${name}" vào danh sách yêu thích`);
+            const updateFavoriteServer = {
+                userId: idCurrentUser,
+                list: newFavoriteList,
+            };
+
+            await favoriteApi.add(updateFavoriteServer);
         } else {
+            const removeFavorite = favoriteList.filter((vegetable) => vegetable.vegetableId !== id);
+            localStorage.setItem('favorite', JSON.stringify(removeFavorite));
+            localStorage.setItem('favoriteLength', removeFavorite.length);
+            toast.success(`Xóa thành công "${name}" khỏi danh sách yêu thích`);
             await favoriteApi.remove(id);
         }
     };
+
+    useEffect(() => {
+        const favoriteList = JSON.parse(localStorage.getItem('favorite')) || [];
+        const like = favoriteList.filter((vegetable) => vegetable.vegetableId === id);
+        if (like.length === 1) {
+            setIsLike(true);
+        }
+    }, [id]);
 
     const handleClose = () => {
         setIsStatusNotify(false);
@@ -110,17 +157,17 @@ const CardProduct = ({ vegetableInfo }) => {
 
     const handleRedirect = () => {
         history.push(`/products/${slug}?id=${id}`);
-        const vegetableRecent = JSON.parse(localStorage.getItem('vegetableRecent'));
+        const vegetableRecent = JSON.parse(sessionStorage.getItem('vegetableRecent'));
         if (!vegetableRecent) {
-            localStorage.setItem('vegetableRecent', JSON.stringify([vegetableInfo]));
+            sessionStorage.setItem('vegetableRecent', JSON.stringify([vegetableInfo]));
         } else {
             const newVegetable = vegetableRecent.filter((item) => item.id !== vegetableInfo.id);
             newVegetable.unshift(vegetableInfo);
             if (newVegetable.length > 4) {
                 newVegetable.pop();
-                localStorage.setItem('vegetableRecent', JSON.stringify(newVegetable));
+                sessionStorage.setItem('vegetableRecent', JSON.stringify(newVegetable));
             } else {
-                localStorage.setItem('vegetableRecent', JSON.stringify(newVegetable));
+                sessionStorage.setItem('vegetableRecent', JSON.stringify(newVegetable));
             }
         }
     };

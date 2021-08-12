@@ -46,6 +46,15 @@ const managementApi = {
         const url = '/checkout';
         return axiosClient.get(url, { params });
     },
+    setOrderState: (data) => {
+        const url = `checkout/${data.id}`;
+        return axiosClient.patch(url, data);
+    },
+
+    setIsAdmin: (data) => {
+        const url = `users/${data.id}`;
+        return axiosClient.patch(url, data);
+    },
 };
 
 export default managementApi;

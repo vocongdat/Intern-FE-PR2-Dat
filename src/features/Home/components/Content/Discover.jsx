@@ -1,12 +1,18 @@
 import { Button, Grid, Typography } from '@material-ui/core';
 import CardProduct from 'components/Common/Client/CardProduct';
 import Title from 'features/Home/components/Title/Title';
-import { discoverActions, selectDiscoverList } from 'features/Home/discoverSlice';
+import {
+    discoverActions,
+    selectDiscoverList,
+    selectLoadingDiscover,
+} from 'features/Home/discoverSlice';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Banner from '../Banner/Banner';
 import CardList from '../CardList/CardList';
+import LoadingHome from './LoadingHome';
+import LoadingList from './LoadingList';
 
 const gridCardStyle = {
     my: 4,
@@ -19,6 +25,7 @@ const Discover = () => {
     const dispatch = useDispatch();
 
     const discoverList = useSelector(selectDiscoverList);
+    const loading = useSelector(selectLoadingDiscover);
 
     const { trendingVegetable, newVegetable, bestSellerVegetable } = discoverList;
 
@@ -33,11 +40,15 @@ const Discover = () => {
             </Grid>
 
             <Grid container spacing={3} sx={gridCardStyle}>
-                {trendingVegetable.map((vegetableInfo) => (
-                    <Grid item xs={3} key={vegetableInfo.id}>
-                        <CardProduct vegetableInfo={vegetableInfo} />
-                    </Grid>
-                ))}
+                {loading ? (
+                    <LoadingHome />
+                ) : (
+                    trendingVegetable.map((vegetableInfo) => (
+                        <Grid item xs={3} key={vegetableInfo.id}>
+                            <CardProduct vegetableInfo={vegetableInfo} />
+                        </Grid>
+                    ))
+                )}
             </Grid>
 
             <Link to='/products' style={{ textDecoration: 'none', margin: 'auto' }}>
@@ -55,10 +66,13 @@ const Discover = () => {
                     <Typography variant='h5' sx={{ mb: 3 }}>
                         Sản phẩm mới
                     </Typography>
-
-                    {newVegetable.map((vegetableInfo) => (
-                        <CardList key={vegetableInfo.id} vegetableInfo={vegetableInfo} />
-                    ))}
+                    {loading ? (
+                        <LoadingList />
+                    ) : (
+                        newVegetable.map((vegetableInfo) => (
+                            <CardList key={vegetableInfo.id} vegetableInfo={vegetableInfo} />
+                        ))
+                    )}
                 </Grid>
 
                 <Grid item xs={4}>
@@ -66,9 +80,13 @@ const Discover = () => {
                         Sản phẩm mua nhiều
                     </Typography>
 
-                    {bestSellerVegetable.map((vegetableInfo) => (
-                        <CardList key={vegetableInfo.id} vegetableInfo={vegetableInfo} />
-                    ))}
+                    {loading ? (
+                        <LoadingList />
+                    ) : (
+                        bestSellerVegetable.map((vegetableInfo) => (
+                            <CardList key={vegetableInfo.id} vegetableInfo={vegetableInfo} />
+                        ))
+                    )}
                 </Grid>
             </Grid>
         </>

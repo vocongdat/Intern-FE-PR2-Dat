@@ -1,6 +1,7 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Loader } from 'components/Common/Client';
+import LoginRoute from 'components/Common/LoginRoute';
 import NotFound from 'components/Common/NotFound';
 import PrivateRoute from 'components/Common/PrivateRoute';
 import { AdminLayout, PageLayout } from 'components/Layout';
@@ -29,13 +30,13 @@ function App() {
             <ThemeProvider theme={theme}>
                 <Suspense fallback={<Loader />}>
                     <Switch>
-                        <Route path={LOGIN_PATH}>
+                        <LoginRoute path={LOGIN_PATH}>
                             <LoginPage />
-                        </Route>
+                        </LoginRoute>
 
-                        <Route path={REGISTER_PATH}>
+                        <LoginRoute path={REGISTER_PATH}>
                             <Register />
-                        </Route>
+                        </LoginRoute>
 
                         <PrivateRoute path={ADMIN_PATH}>
                             <AdminLayout />

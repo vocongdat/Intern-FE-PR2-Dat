@@ -9,16 +9,19 @@ function* fetchVegetableDiscover() {
                 _sort: 'viewed',
                 _order: 'desc',
                 _end: 8,
+                deletedAt_ne: true,
             }),
             call(vegetableApi.getAll, {
                 _sort: 'createdAt',
                 _order: 'desc',
                 _end: 3,
+                deletedAt_ne: true,
             }),
             call(vegetableApi.getAll, {
                 _sort: 'sold',
                 _order: 'desc',
                 _end: 3,
+                deletedAt_ne: true,
             }),
         ]);
 
