@@ -13,10 +13,12 @@ function* register(action) {
         user: registerUsername,
         email: registerEmail,
         password: hashedPassword,
+        isAdmin: false,
     };
     yield call(managementApi.register, formValueHash);
     delay(500);
     yield put(push(LOGIN_PATH));
+    delay(1000);
     toast.success('Đăng kí thành công !');
 }
 

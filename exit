@@ -1,0 +1,17 @@
+[33mf7906cc[m[33m ([m[1;36mHEAD -> [m[1;32mdetail-vegetable[m[33m, [m[1;31morigin/detail-vegetable[m[33m)[m HEAD@{0}: commit: Detail Vegetables
+[33me0b1ba9[m[33m ([m[1;31morigin/featured-products[m[33m, [m[1;32mfeatured-products[m[33m)[m HEAD@{1}: checkout: moving from featured-products to detail-vegetable
+[33me0b1ba9[m[33m ([m[1;31morigin/featured-products[m[33m, [m[1;32mfeatured-products[m[33m)[m HEAD@{2}: commit: featured vegetables
+[33m2844e26[m[33m ([m[1;31morigin/HomePage[m[33m, [m[1;32mHomePage[m[33m)[m HEAD@{3}: checkout: moving from HomePage to featured-products
+[33m2844e26[m[33m ([m[1;31morigin/HomePage[m[33m, [m[1;32mHomePage[m[33m)[m HEAD@{4}: commit (amend): HomePage
+[33m1a377d0[m HEAD@{5}: commit (amend): HomePage
+[33m9fb65c4[m HEAD@{6}: commit (amend): HomePage
+[33m581e00b[m HEAD@{7}: commit (amend): HomePage
+[33m5eb7b56[m HEAD@{8}: commit: HomePage
+[33m78ba1c6[m[33m ([m[1;31morigin/header-footer[m[33m, [m[1;32mheader-footer[m[33m)[m HEAD@{9}: checkout: moving from header-footer to HomePage
+[33m78ba1c6[m[33m ([m[1;31morigin/header-footer[m[33m, [m[1;32mheader-footer[m[33m)[m HEAD@{10}: commit (amend): Header, Footer
+[33mff0e985[m HEAD@{11}: commit (amend): Header, Footer
+[33m68f1be7[m HEAD@{12}: commit (amend): Header, Footer
+[33m88dbd89[m HEAD@{13}: commit: Header, Footer
+[33maf59213[m HEAD@{14}: reset: moving to af59213
+[33md83dd0b[m HEAD@{15}: checkout: moving from master to header-footer
+[33m230b486[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{16}: clone: from https://github.com/vocongdat/Intern-FE-PR2-Dat.git

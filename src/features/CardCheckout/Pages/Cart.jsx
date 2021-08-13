@@ -72,12 +72,9 @@ const Cart = () => {
             )
         );
     }
-
-    const invoiceSubtotal = subtotal(rows);
-    const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-    const invoiceTotal = invoiceTaxes + invoiceSubtotal;
-
-    const [totalCash, setTotalCash] = useState(invoiceSubtotal);
+    const [subTotal, setSubTotal] = useState(0);
+    const [vat, setVat] = useState(0);
+    const [totalCash, setTotalCash] = useState(0);
 
     useEffect(() => {
         setCartList(JSON.parse(localStorage.getItem('cartList')) || []);
@@ -85,8 +82,13 @@ const Cart = () => {
 
     useEffect(() => {
         localStorage.setItem('cartList', JSON.stringify(cartList));
-        setTotalCash(invoiceSubtotal);
-    }, [cartList, totalCash]);
+        const invoiceSubtotal = subtotal(rows);
+        const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+        const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+        setSubTotal(invoiceSubtotal);
+        setVat(invoiceTaxes);
+        setTotalCash(invoiceTotal);
+    }, [cartList, totalCash, subTotal, vat]);
 
     const handleCloseAlert = (event, reason) => {
         if (reason === 'clickaway') {
@@ -101,7 +103,14 @@ const Cart = () => {
         setCartList(cartListRemove);
         if (cartListRemove.length > 0) {
             const total = cartListRemove.reduce((acc, cur) => acc + Number(cur.quantity), 0);
+            const invoiceSubtotal = subtotal(rows);
+            const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+            const invoiceTotal = invoiceTaxes + invoiceSubtotal;
             localStorage.setItem('countCart', total);
+            setSubTotal(invoiceSubtotal);
+            setVat(invoiceTaxes);
+            setTotalCash(invoiceTotal);
+            localStorage.setItem('checkout', JSON.stringify(cartList.concat({ totalCash })));
         }
     };
 
@@ -122,7 +131,14 @@ const Cart = () => {
             const total = newCartList.reduce((acc, cur) => acc + Number(cur.quantity), 0);
             localStorage.setItem('countCart', total);
         }
-        // dispatch(cartActions.updateCart(newCart));
+        const invoiceSubtotal = subtotal(rows);
+        const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+        const invoiceTotal = invoiceTaxes + invoiceSubtotal;
+        setSubTotal(invoiceSubtotal);
+        setVat(invoiceTaxes);
+        setTotalCash(invoiceTotal);
+        setTotalCash(invoiceTotal);
+        localStorage.setItem('checkout', JSON.stringify(cartList.concat({ totalCash })));
     };
 
     const [open, setOpen] = useState(false);
@@ -138,6 +154,8 @@ const Cart = () => {
     const handleCloseModal = () => {
         setOpen(false);
         setOpenAlert(true);
+        localStorage.setItem('checkout', JSON.stringify(cartList.concat({ totalCash })));
+        localStorage.setItem('countCart', 0);
         setCartList([]);
     };
     const initialValues = {
@@ -147,7 +165,8 @@ const Cart = () => {
         phone: '',
         address: '',
         ...userInfo,
-        total: invoiceSubtotal,
+        total: totalCash,
+        list: [],
         status: 'Chưa xác nhận',
     };
 
@@ -224,24 +243,18 @@ const Cart = () => {
                             <TableRow>
                                 <TableCell rowSpan={3} />
                                 <TableCell colSpan={2}>Tạm tính</TableCell>
-                                <TableCell align='right'>
-                                    {formatNumber(invoiceSubtotal)}.000 đ
-                                </TableCell>
+                                <TableCell align='right'>{formatNumber(subTotal)}.000 đ</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell>Vat</TableCell>
                                 <TableCell align='right'>{`${(TAX_RATE * 100).toFixed(
                                     0
                                 )} %`}</TableCell>
-                                <TableCell align='right'>
-                                    {formatNumber(invoiceTaxes)}.000 đ
-                                </TableCell>
+                                <TableCell align='right'>{formatNumber(vat)}.000 đ</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell colSpan={2}>Thành tiền</TableCell>
-                                <TableCell align='right'>
-                                    {formatNumber(invoiceTotal)}.000 đ
-                                </TableCell>
+                                <TableCell align='right'>{formatNumber(totalCash)}.000 đ</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

@@ -7,6 +7,7 @@ const root = {
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 2,
+    minWidth: 300,
     border: `1px solid divider`,
 };
 

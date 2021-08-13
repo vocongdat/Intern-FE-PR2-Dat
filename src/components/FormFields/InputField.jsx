@@ -3,6 +3,13 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useController } from 'react-hook-form';
 
+const root = {
+    '& .MuiInputLabel-root': {
+        fontWeight: '400',
+        color: 'common.black',
+    },
+};
+
 export const InputField = ({ name, control, label, ...inputProps }) => {
     const {
         field: { value, onChange, onBlur, ref },
@@ -26,6 +33,7 @@ export const InputField = ({ name, control, label, ...inputProps }) => {
             error={invalid}
             helperText={error?.message}
             inputProps={inputProps}
+            sx={root}
         />
     );
 };

@@ -15,7 +15,7 @@ const InfoVegetable = () => {
 
     const vegetableInfo = useSelector(selectVegetableById);
     const loading = useSelector(selectVegetableLoading);
-    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    const scrollToTop = () => window.scrollTo({ top: 100, behavior: 'smooth' });
 
     useEffect(() => {
         const id = search.split('=')[1];
@@ -36,10 +36,13 @@ const InfoVegetable = () => {
                         </Grid>
                         <Grid item xs={6}>
                             <ContentVegetable
+                                id={vegetableInfo.id}
                                 name={vegetableInfo.name}
                                 price={vegetableInfo.price}
                                 weight={vegetableInfo.weight}
                                 category={vegetableInfo.categoryName}
+                                images={vegetableInfo.images}
+                                slug={vegetableInfo.slug}
                                 loading={loading}
                             />
                         </Grid>

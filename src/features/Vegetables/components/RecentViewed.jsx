@@ -10,7 +10,7 @@ const gridCardStyle = {
 
 const RecentViewed = () => {
     const dispatch = useDispatch();
-    const vegetableRecent = JSON.parse(localStorage.getItem('vegetableRecent'));
+    const vegetableRecent = JSON.parse(sessionStorage.getItem('vegetableRecent')) || [];
 
     const loading = useSelector(selectVegetableLoading);
     const filter = useSelector(selectVegetableFilter);

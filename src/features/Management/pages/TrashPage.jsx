@@ -75,7 +75,7 @@ const TrashPage = () => {
         try {
             await vegetableApi.remove(product?.id || '');
 
-            toast.success('Remove vegetable successfully!');
+            toast.success('Xóa sản phẩm thành công');
 
             const newFilter = { ...filterTrash };
             dispatch(managementActions.setFilterTrash(newFilter));
@@ -89,7 +89,7 @@ const TrashPage = () => {
             const data = { ...product, deletedAt: false };
             await vegetableApi.update(data);
 
-            toast.success('Recycle Vegetable successfully!');
+            toast.success('Khôi phục sản phẩm thành công');
 
             const newFilter = { ...filterTrash };
             dispatch(managementActions.setFilterTrash(newFilter));
@@ -104,6 +104,7 @@ const TrashPage = () => {
 
             <Box className={classes.titleContainer}>
                 <Typography variant='h4'>Trash</Typography>
+                <Typography variant='h5'>Thùng rác có {pagination._totalRow} sản phẩm</Typography>
             </Box>
 
             <Box sx={{ my: 3 }}>
@@ -119,7 +120,7 @@ const TrashPage = () => {
                 onEdit={handleRecycleVegetable}
                 onRemove={handleRemoveVegetable}
                 actionName='Khôi phục'
-                titleUpdate='Thời gian xóa'
+                titleAction='Thao tác này không thể khôi phục lại, bạn có chắc chắn muốn tiếp tục không?'
             />
 
             <Box my={2} display='flex' justifyContent='center'>

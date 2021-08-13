@@ -4,10 +4,12 @@ import Divider from '@material-ui/core/Divider';
 import cartApi from 'api/cartApit';
 import { InputField } from 'components/FormFields';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
+import { cartActions } from '../CardCheckoutSlice';
 
 function subtotal(items) {
     return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
@@ -29,20 +31,34 @@ const dividerStyle = {
 
 const Checkout = ({ initialValues, handleCloseModal }) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const handleFormSubmit = async (e) => {
-        await cartApi.addOrder(e);
         localStorage.setItem('countCart', 0);
-
+        const newInit = {
+            ...initialValues,
+            list: JSON.parse(localStorage.getItem('checkout')),
+        };
+        await cartApi.addOrder(newInit);
         handleCloseModal();
     };
+
+    const [initValue, setInitValue] = useState(initialValues);
+
+    useEffect(() => {
+        const newInit = {
+            ...initialValues,
+            list: JSON.parse(localStorage.getItem('checkout')),
+        };
+        setInitValue(newInit);
+    }, [initialValues]);
 
     const {
         control,
         handleSubmit,
         formState: { isSubmitting },
     } = useForm({
-        defaultValues: initialValues,
+        defaultValues: initValue,
         resolver: yupResolver(schema),
     });
 

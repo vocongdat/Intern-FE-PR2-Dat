@@ -4,23 +4,70 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
+import cartApi from 'api/cartApit';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { formatNumber } from 'utils';
 import { v4 as uuid } from 'uuid';
 import Sharing from './Sharing';
 
-const ContentVegetable = ({ name, price, weight, category, loading }) => {
+const ContentVegetable = ({ id, name, price, weight, category, loading, images, slug }) => {
     const { t } = useTranslation();
-    const [weightItem, setWeightItem] = useState('');
+    const [weightItem, setWeightItem] = useState(0);
     const [isEnable, setIsEnable] = useState(true);
+    const idCurrentUser = localStorage.getItem('access_token');
+    const [quantity, setQuantity] = useState(1);
 
     const handleWeightChange = (event) => {
         const valueWeight = event.target.value;
-
         setWeightItem(valueWeight);
         setIsEnable(false);
+    };
+
+    const handleOnChangeQuantity = (e) => {
+        setQuantity(Number(e.target.value));
+    };
+
+    const handleAddToCart = async () => {
+        const cartList = JSON.parse(localStorage.getItem('cartList')) || [];
+        const valueForm = {
+            userId: idCurrentUser,
+            quantity: quantity * Number(weightItem),
+            price,
+            slug,
+            image: images[0],
+            name,
+            vegetableId: id,
+        };
+
+        let newCartList = [];
+        const result = cartList.find((vegetable) => vegetable.vegetableId === id);
+        if (result) {
+            const newResult = {
+                ...result,
+                quantity: quantity * Number(weightItem),
+            };
+            const cartRemaining = cartList.filter((info) => info.vegetableId !== id);
+            newCartList = [newResult, ...cartRemaining];
+        } else {
+            newCartList = [valueForm, ...cartList];
+        }
+
+        localStorage.setItem('cartList', JSON.stringify(newCartList));
+        if (newCartList.length > 0) {
+            const total = newCartList.reduce((acc, cur) => acc + Number(cur.quantity), 0);
+            localStorage.setItem('countCart', total);
+        }
+        toast.success(`Thêm thành công "${name}" vào giỏ hàng`);
+
+        const updateCartServer = {
+            userId: idCurrentUser,
+            list: newCartList,
+        };
+
+        await cartApi.add(updateCartServer);
     };
 
     return (
@@ -63,8 +110,8 @@ const ContentVegetable = ({ name, price, weight, category, loading }) => {
                         onChange={handleWeightChange}
                         size='small'
                     >
-                        {weight.map((itemWeight) => (
-                            <MenuItem key={uuid()} value={itemWeight}>
+                        {weight.map((itemWeight, index) => (
+                            <MenuItem key={uuid()} value={index + 1}>
                                 {itemWeight}
                             </MenuItem>
                         ))}
@@ -83,7 +130,8 @@ const ContentVegetable = ({ name, price, weight, category, loading }) => {
                     id='outlined-number'
                     label={t('quantity')}
                     type='number'
-                    defaultValue={1}
+                    value={quantity}
+                    onChange={handleOnChangeQuantity}
                     size='small'
                     InputLabelProps={{
                         shrink: true,
@@ -91,7 +139,12 @@ const ContentVegetable = ({ name, price, weight, category, loading }) => {
                     sx={{ mr: 2, width: 100 }}
                 />
 
-                <Button variant='contained' color='primary' disabled={isEnable}>
+                <Button
+                    variant='contained'
+                    color='primary'
+                    disabled={isEnable || quantity <= 0}
+                    onClick={handleAddToCart}
+                >
                     {t('addToCard')}
                 </Button>
             </Box>
@@ -136,19 +189,25 @@ const ContentVegetable = ({ name, price, weight, category, loading }) => {
 };
 
 ContentVegetable.propTypes = {
+    id: PropTypes.string,
     name: PropTypes.string,
     price: PropTypes.number,
     weight: PropTypes.array,
     category: PropTypes.array,
     loading: PropTypes.bool,
+    images: PropTypes.array,
+    slug: PropTypes.string,
 };
 
 ContentVegetable.defaultProps = {
+    id: '',
     name: '',
     price: 0,
     weight: [],
     category: [],
     loading: true,
+    images: [],
+    slug: '',
 };
 
 export default ContentVegetable;

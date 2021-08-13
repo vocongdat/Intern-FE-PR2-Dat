@@ -1,5 +1,6 @@
 import {
     alpha,
+    Avatar,
     Box,
     Button,
     Checkbox,
@@ -37,7 +38,7 @@ const useStyles = makeStyles({
         borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         color: 'white',
-        height: 48,
+        height: 40,
         padding: '0 30px',
     },
 });
@@ -70,37 +71,11 @@ function createData(
     };
 }
 
-function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) return order;
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}
-
 const headCells = [
     {
         id: uuid(),
         numeric: false,
-        disablePadding: false,
+        disablePadding: true,
         label: 'Thứ tự',
     },
     {
@@ -111,64 +86,33 @@ const headCells = [
     },
     {
         id: uuid(),
-        numeric: true,
-        disablePadding: false,
+        numeric: false,
+        disablePadding: true,
+        label: 'Hình ảnh',
+    },
+    {
+        id: uuid(),
+        numeric: false,
+        disablePadding: true,
         label: 'Phân loại (Chuỗi)',
     },
     {
         id: uuid(),
-        numeric: true,
-        disablePadding: false,
+        numeric: false,
+        disablePadding: true,
         label: 'Giá (Số)',
     },
     {
         id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: 'Khối lượng (Danh sách)',
+        numeric: false,
+        disablePadding: true,
+        label: 'Thời gian cập nhật',
     },
     {
         id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: 'Số lượng (Số)',
-    },
-    {
-        id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: 'Danh sách ảnh (Danh sách)',
-    },
-    {
-        id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: 'Mô tả (Danh sách)',
-    },
-
-    {
-        id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: 'Slug (Chuỗi)',
-    },
-    {
-        id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: 'Thời gian tạo (Date)',
-    },
-    {
-        id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: `Thời gian cập nhập (Date)`,
-    },
-    {
-        id: uuid(),
-        numeric: true,
-        disablePadding: false,
-        label: 'Hành động',
+        numeric: false,
+        disablePadding: true,
+        label: '',
     },
 ];
 
@@ -203,7 +147,6 @@ const EnhancedTableHead = ({
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
-                        sx={{ minWidth: 170 }}
                     >
                         <TableSortLabel
                             active={orderBy === headCell.id}
@@ -232,57 +175,33 @@ EnhancedTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
-const EnhancedTableToolbar = (props) => {
-    const { numSelected } = props;
+function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+        return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+        return 1;
+    }
+    return 0;
+}
 
-    return (
-        <Toolbar
-            sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
-                ...(numSelected > 0 && {
-                    bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                }),
-            }}
-        >
-            {numSelected > 0 ? (
-                <Typography
-                    sx={{ flex: '1 1 100%' }}
-                    color='inherit'
-                    variant='subtitle1'
-                    component='div'
-                >
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography sx={{ flex: '1 1 100%' }} variant='h6' id='tableTitle' component='div'>
-                    Vegetables
-                </Typography>
-            )}
+function getComparator(order, orderBy) {
+    return order === 'desc'
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
-            {numSelected > 0 ? (
-                <Tooltip title='Delete'>
-                    <IconButton>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title='Filter list'>
-                    <IconButton>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
-    );
-};
+function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+}
 
-EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired,
-};
-
-const ProductTable = ({ productList, onEdit, onRemove, actionName }) => {
+const ProductTable = ({ productList, onEdit, onRemove, actionName, titleAction }) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState('');
@@ -358,6 +277,7 @@ const ProductTable = ({ productList, onEdit, onRemove, actionName }) => {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
+            console.log(event.target.checked);
             const newSelecteds = rows.map((n) => n.name);
             setSelected(newSelecteds);
             return;
@@ -369,8 +289,7 @@ const ProductTable = ({ productList, onEdit, onRemove, actionName }) => {
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <EnhancedTableToolbar numSelected={selected.length} />
-            <TableContainer component={Paper} sx={{ maxHeight: '84vh', maxWidth: '74vw' }}>
+            <TableContainer component={Paper} sx={{ maxHeight: '84vh' }}>
                 <Table
                     className={classes.table}
                     size='small'
@@ -387,81 +306,73 @@ const ProductTable = ({ productList, onEdit, onRemove, actionName }) => {
                     />
 
                     <TableBody>
-                        {stableSort(rows, getComparator(order, orderBy))
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row, index) => {
-                                const isItemSelected = isSelected(row.name);
-                                const labelId = `enhanced-table-checkbox-${index}`;
+                        {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+                            const isItemSelected = isSelected(row.name);
+                            const labelId = `enhanced-table-checkbox-${index}`;
 
-                                return (
-                                    <TableRow
-                                        hover
-                                        onClick={(event) => handleClick(event, row.name)}
-                                        role='checkbox'
-                                        aria-checked={isItemSelected}
-                                        tabIndex={-1}
-                                        key={row.id}
-                                        selected={isItemSelected}
+                            return (
+                                <TableRow
+                                    hover
+                                    role='checkbox'
+                                    aria-checked={isItemSelected}
+                                    tabIndex={-1}
+                                    key={row.id}
+                                    selected={isItemSelected}
+                                >
+                                    <TableCell padding='checkbox'>
+                                        <Checkbox
+                                            color='primary'
+                                            checked={isItemSelected}
+                                            inputProps={{
+                                                'aria-labelledby': labelId,
+                                            }}
+                                        />
+                                    </TableCell>
+                                    <TableCell align='left'>{index + 1}</TableCell>
+
+                                    <TableCell
+                                        component='th'
+                                        id={labelId}
+                                        scope='row'
+                                        padding='none'
+                                        align='left'
                                     >
-                                        <TableCell padding='checkbox'>
-                                            <Checkbox
-                                                color='primary'
-                                                checked={isItemSelected}
-                                                inputProps={{
-                                                    'aria-labelledby': labelId,
-                                                }}
-                                            />
-                                        </TableCell>
-                                        <TableCell align='left'>{index + 1}</TableCell>
-
-                                        <TableCell
-                                            component='th'
-                                            id={labelId}
-                                            scope='row'
-                                            padding='none'
-                                            align='left'
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell padding='none'>
+                                        <Avatar
+                                            variant='rounded'
+                                            alt={row.name}
+                                            src={row.images[0]}
+                                            sx={{ width: 56, height: 56, my: 1 }}
+                                        />
+                                    </TableCell>
+                                    <TableCell padding='none'>{row?.categoryName}</TableCell>
+                                    <TableCell padding='none'>
+                                        {formatNumber(row?.price)}.000 đ
+                                    </TableCell>
+                                    <TableCell padding='none'>{row?.updatedAt}</TableCell>
+                                    <TableCell padding='none'>
+                                        <Button
+                                            size='small'
+                                            className={classes.edit}
+                                            color='primary'
+                                            onClick={() => onEdit?.(row)}
                                         >
-                                            {row.name}
-                                        </TableCell>
+                                            {actionName}
+                                        </Button>
 
-                                        <TableCell align='right'>{row?.categoryName}</TableCell>
-                                        <TableCell align='right'>
-                                            {formatNumber(row?.price)}.000 đ
-                                        </TableCell>
-                                        <TableCell align='right'>{row?.weight}</TableCell>
-                                        <TableCell align='right'>{row?.quantity}</TableCell>
-                                        <TableCell align='right'>
-                                            {truncateString(row?.images, 20)}
-                                        </TableCell>
-                                        <TableCell align='right'>
-                                            {truncateString(row?.description, 20)}
-                                        </TableCell>
-                                        <TableCell align='right'>
-                                            {truncateString(row?.slug, 20)}
-                                        </TableCell>
-                                        <TableCell align='right'>{row?.createdAt}</TableCell>
-                                        <TableCell align='right'>{row?.updatedAt}</TableCell>
-                                        <TableCell align='right'>
-                                            <Button
-                                                size='small'
-                                                className={classes.edit}
-                                                color='primary'
-                                                onClick={() => onEdit?.(row)}
-                                            >
-                                                {actionName}
-                                            </Button>
-
-                                            <Button
-                                                size='small'
-                                                color='secondary'
-                                                onClick={() => handleRemoveClick(row)}
-                                            >
-                                                Xóa
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
+                                        <Button
+                                            size='small'
+                                            color='secondary'
+                                            onClick={() => handleRemoveClick(row)}
+                                        >
+                                            Xóa
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            );
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -472,11 +383,15 @@ const ProductTable = ({ productList, onEdit, onRemove, actionName }) => {
                 aria-labelledby='alert-dialog-title'
                 aria-describedby='alert-dialog-description'
             >
-                <DialogTitle id='alert-dialog-title'>Chuyển vào thùng rác?</DialogTitle>
+                <DialogTitle id='alert-dialog-title'>
+                    {!titleAction ? 'Chuyển vào thùng rác?' : 'Xóa vĩnh viễn'}
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-description'>
-                        Bạn có chắc chắn muốn chuyển &quot;<b>{selectedProduct?.name}</b>&quot; vào
-                        thùng rác?
+                        {!titleAction
+                            ? `Bạn có chắc chắn muốn chuyển "${selectedProduct?.name}" vào
+                        thùng rác?`
+                            : titleAction}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -488,7 +403,7 @@ const ProductTable = ({ productList, onEdit, onRemove, actionName }) => {
                         variant='contained'
                         autoFocus
                     >
-                        Chuyển vào thùng rác
+                        {!titleAction ? 'Chuyển vào thùng rác' : 'Xóa'}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -501,6 +416,7 @@ ProductTable.propTypes = {
     onEdit: PropTypes.func,
     onRemove: PropTypes.func,
     actionName: PropTypes.string,
+    titleAction: PropTypes.string,
 };
 
 ProductTable.defaultProps = {
@@ -508,6 +424,7 @@ ProductTable.defaultProps = {
     onEdit: null,
     onRemove: null,
     actionName: 'Sửa',
+    titleAction: '',
 };
 
 export default ProductTable;

@@ -64,6 +64,7 @@ const Register = () => {
     const handleRegister = async (e) => {
         dispatch(registerActions.register(e));
     };
+
     return (
         <Box sx={rootStyle}>
             <Paper sx={{ maxWidth: 400, p: 4, bgcolor: 'hsla(0, 0%, 100%, 0.6)' }}>

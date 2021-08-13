@@ -40,14 +40,9 @@ const AddEditPage = () => {
     const initialValues = {
         name: '',
         price: 0,
-        weight: '',
-        quantity: 0,
-        images: '',
-        description: '',
-        categoryName: '',
+        weight: [],
+        description: [],
         slug: '',
-        viewed: 0,
-        sold: 0,
         ...productInfo,
     };
 

@@ -1,8 +1,12 @@
-import { Box, Grid, LinearProgress, Typography } from '@material-ui/core';
+import { Box, Grid, LinearProgress, Stack, Typography } from '@material-ui/core';
 import PageviewIcon from '@material-ui/icons/Pageview';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { React, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import LineChart from '../components/LineChart';
+import RankingList from '../components/RankingList';
+import StatisticItem from '../components/StatisticItem';
+import Widget from '../components/Widget';
 import {
     dashboardActions,
     selectDashboardList,
@@ -12,10 +16,6 @@ import {
     selectLowestSoldList,
     selectLowestViewedList,
 } from '../dashboardSlice';
-import LineChart from '../components/LineChart';
-import RankingList from '../components/RankingList';
-import StatisticItem from '../components/StatisticItem';
-import Widget from '../components/Widget';
 
 const Summary = () => {
     const statistics = useSelector(selectDashboardList);
@@ -43,34 +43,34 @@ const Summary = () => {
             {loading && (
                 <LinearProgress sx={{ position: 'absolute', top: 'spacing(-1)', width: '100%' }} />
             )}
-            <div style={{ height: '500px', marginTop: 10 }}>
-                <Grid container spacing={3}>
-                    <Grid item sm={8} xs={12}>
-                        <LineChart data={statistics} />
-                    </Grid>
-                </Grid>
-            </div>
-            <Box sx={{ position: 'relative', paddingTop: 'spacing(1)' }}>
-                <Grid container spacing={3} sx={{ my: 4 }}>
-                    <Grid item xs={12} md={6} lg={4}>
-                        <StatisticItem
-                            icon={<PageviewIcon fontSize='large' color='primary' />}
-                            label='Tổng lượt xem'
-                            value={totalViewed}
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={4}>
-                        <StatisticItem
-                            icon={<ShoppingCartIcon fontSize='large' color='primary' />}
-                            label='Tổng hàng sản phẩm đã bán'
-                            value={totalSold}
-                        />
-                    </Grid>
-                </Grid>
+            <Stack
+                direction='row'
+                justifyContent='space-around'
+                alignItems='center'
+                spacing={2}
+                sx={{ mt: 7 }}
+            >
+                <LineChart data={statistics} />
+                <Stack direction='column' justifyContent='center' alignItems='center' spacing={2}>
+                    <Typography variant='h4'>Tổng quan</Typography>
+                    <StatisticItem
+                        icon={<PageviewIcon fontSize='large' color='primary' />}
+                        label='Tổng lượt xem'
+                        value={totalViewed}
+                    />
+                    <StatisticItem
+                        icon={<ShoppingCartIcon fontSize='large' color='primary' />}
+                        label='Tổng hàng sản phẩm đã bán'
+                        value={totalSold}
+                    />
+                </Stack>
+            </Stack>
 
-                {/* All students rankings */}
+            <Box sx={{ position: 'relative', paddingTop: 'spacing(1)' }}>
                 <Box mt={5}>
-                    <Typography variant='h4'>Statistics Vegetables</Typography>
+                    <Typography variant='h4' sx={{ textAlign: 'center' }}>
+                        Xếp hạng
+                    </Typography>
 
                     <Box my={4}>
                         <Grid container spacing={3}>
@@ -103,6 +103,5 @@ const Summary = () => {
         </>
     );
 };
-Summary.propTypes = {};
 
 export default Summary;

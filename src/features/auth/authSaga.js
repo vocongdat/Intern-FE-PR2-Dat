@@ -12,7 +12,7 @@ function* handleLogin(action) {
         const { user, password } = action.payload;
         const response = yield call(managementApi.getUsers, user);
         const isPasswordMatch = yield bcrypt.compare(password, response.body[0].password);
-        delay(2500);
+        delay(2000);
         if (isPasswordMatch) {
             const token = jwt.sign({ id: response.body[0].id }, 'login', {
                 expiresIn: '1h',
@@ -37,6 +37,10 @@ function* handleLogout() {
     yield delay(500);
     localStorage.removeItem('access_token');
     localStorage.removeItem('isAdmin');
+    localStorage.setItem('countCart', 0);
+    localStorage.setItem('favorite', JSON.stringify([]));
+    localStorage.setItem('favoriteLength', 0);
+    localStorage.setItem('cartList', JSON.stringify([]));
 
     yield put(push('/login'));
 }

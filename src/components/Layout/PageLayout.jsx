@@ -1,7 +1,8 @@
 import { Footer, Header } from 'components/Common/Client';
 import NotFound from 'components/Common/NotFound';
-import { CART_CHECKOUT_PATH, ROUTER, USER_PATH, WISHLIST_PATH } from 'constants/index';
+import { CART_CHECKOUT_PATH, ORDER_PATH, ROUTER, USER_PATH, WISHLIST_PATH } from 'constants/index';
 import CardCheckout from 'features/CardCheckout';
+import Ordered from 'features/CardCheckout/Pages/Ordered';
 import User from 'features/User';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -16,6 +17,10 @@ export const PageLayout = () => (
         <Switch>
             <Route path={USER_PATH}>
                 <User />
+            </Route>
+
+            <Route path={ORDER_PATH}>
+                <Ordered />
             </Route>
 
             <Route path={CART_CHECKOUT_PATH}>

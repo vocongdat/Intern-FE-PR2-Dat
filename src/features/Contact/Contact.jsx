@@ -1,7 +1,9 @@
+const { Paper, Typography } = require('@material-ui/core');
+
 const Contact = () => (
-    <div>
-        <h2>Contact</h2>
-    </div>
+    <Paper>
+        <Typography>Contact</Typography>
+    </Paper>
 );
 
 export default Contact;

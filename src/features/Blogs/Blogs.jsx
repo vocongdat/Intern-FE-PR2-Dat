@@ -1,7 +1,9 @@
+const { Paper, Typography } = require('@material-ui/core');
+
 const Blogs = () => (
-    <div>
-        <h2>Blogs</h2>
-    </div>
+    <Paper>
+        <Typography>Blogs</Typography>
+    </Paper>
 );
 
 export default Blogs;

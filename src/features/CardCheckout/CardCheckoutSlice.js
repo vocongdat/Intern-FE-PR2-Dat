@@ -4,6 +4,7 @@ const initialState = {
     loading: false,
     cartList: [],
     cartInfo: {},
+    checkoutList: [],
 };
 
 const cartSlice = createSlice({
@@ -31,6 +32,20 @@ const cartSlice = createSlice({
         fetchCartByIdFailed(state) {
             state.loading = false;
         },
+
+        fetchCheckoutByUser(state) {
+            state.loading = true;
+        },
+
+        fetchCheckoutByUserSuccess(state, action) {
+            state.loading = false;
+            state.checkoutList = action.payload;
+        },
+
+        fetchCheckoutByUserFailed(state) {
+            state.loading = false;
+        },
+
         updateCart(state, action) {},
     },
 });
@@ -42,6 +57,7 @@ export const cartActions = cartSlice.actions;
 export const selectLoading = (state) => state.cart.loading;
 export const selectCartList = (state) => state.cart.cartList;
 export const selectCartInfo = (state) => state.cart.cartInfo;
+export const selectCheckoutList = (state) => state.cart.checkoutList;
 
 // Reducer
 const cartReducer = cartSlice.reducer;

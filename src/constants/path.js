@@ -16,6 +16,7 @@ const USER_INFO_PATH = '/user/info';
 const USER_EDIT_PATH = '/user/edit';
 const CART_CHECKOUT_PATH = '/cart';
 const CHECKOUT_PATH = '/cart/checkout';
+const ORDER_PATH = '/cart/order';
 
 export {
     HOME_PATH,
@@ -36,4 +37,5 @@ export {
     USER_PATH,
     CART_CHECKOUT_PATH,
     CHECKOUT_PATH,
+    ORDER_PATH,
 };

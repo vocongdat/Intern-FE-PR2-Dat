@@ -20,13 +20,24 @@ function* fetchCartById(action) {
     }
 }
 
+function* fetchCheckoutByUser(action) {
+    try {
+        const response = yield call(cartApi.getOrder, action.payload);
+        yield put(cartActions.fetchCheckoutByUserSuccess(response.body));
+    } catch (error) {
+        yield put(cartActions.fetchCheckoutByUserFailed());
+    }
+}
+
 function* updateCart(action) {
     yield delay(500);
-    yield call(cartApi.update, action.payload);
+    yield call(cartApi.add, action.payload);
 }
 
 export default function* cartSaga() {
     yield takeLatest(cartActions.fetchCartList, fetchCartList);
+
+    yield takeLatest(cartActions.fetchCheckoutByUser, fetchCheckoutByUser);
 
     yield takeLatest(cartActions.updateCart, updateCart);
 }

@@ -8,7 +8,7 @@ const PrivateRoute = (props) => {
     const history = useHistory();
 
     if (!isAdmin || !isLoggedIn) {
-        return history.goForward();
+        return <Redirect to={LOGIN_PATH} />;
     }
 
     return <Route {...props} />;

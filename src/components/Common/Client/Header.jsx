@@ -25,6 +25,7 @@ import {
     HOME_PATH,
     Images,
     LOGIN_PATH,
+    ORDER_PATH,
     REGISTER_PATH,
     ROUTER,
     USER_INFO_PATH,
@@ -159,9 +160,11 @@ const Header = () => {
                 </MenuItem>
             </Link>
 
-            <MenuItem>
-                <Avatar /> {t('orderHistory')}
-            </MenuItem>
+            <Link to={ORDER_PATH} style={{ textDecoration: 'none', color: 'black' }}>
+                <MenuItem>
+                    <Avatar /> {t('orderHistory')}
+                </MenuItem>
+            </Link>
 
             {userInfo.isAdmin ? (
                 <Link to={DASHBOARD_PATH} style={{ textDecoration: 'none', color: 'black' }}>

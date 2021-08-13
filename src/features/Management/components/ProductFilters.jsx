@@ -6,13 +6,18 @@ import { Search } from '@material-ui/icons';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { managementActions, selectCategoryListList } from '../ManagementSlice';
+import {
+    managementActions,
+    selectCategoryListList,
+    selectProductListFilter,
+} from '../ManagementSlice';
 
-const ProductFilters = ({ filter, onChange, onSearchChange }) => {
+const ProductFilters = ({ onChange, onSearchChange }) => {
     const searchRef = useRef();
     const dispatch = useDispatch();
 
     const categoryList = useSelector(selectCategoryListList);
+    const filter = useSelector(selectProductListFilter);
 
     useEffect(() => {
         dispatch(managementActions.fetchCategoryList());
@@ -127,16 +132,8 @@ const ProductFilters = ({ filter, onChange, onSearchChange }) => {
                             <MenuItem value='name.desc'>Name DESC</MenuItem>
                             <MenuItem value='price.asc'>Price ASC</MenuItem>
                             <MenuItem value='price.desc'>Price DESC</MenuItem>
-                            <MenuItem value='quantity.asc'>Quantity ASC</MenuItem>
-                            <MenuItem value='quantity.desc'>Quantity DESC</MenuItem>
-                            <MenuItem value='viewed.asc'>Viewed ASC</MenuItem>
-                            <MenuItem value='viewed.desc'>Viewed DESC</MenuItem>
-                            <MenuItem value='sold.asc'>Sold ASC</MenuItem>
-                            <MenuItem value='sold.desc'>Sold DESC</MenuItem>
-                            <MenuItem value='createdAt.asc'>CreatedAt ASC</MenuItem>
-                            <MenuItem value='createdAt.desc'>CreatedAt DESC</MenuItem>
-                            <MenuItem value='updatedAt.asc'>UpdatedAt ASC</MenuItem>
-                            <MenuItem value='updatedAt.desc'>UpdatedAt DESC</MenuItem>
+                            <MenuItem value='updatedAt.asc'>Updated ASC</MenuItem>
+                            <MenuItem value='updatedAt.desc'>Updated DESC</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
@@ -157,13 +154,11 @@ const ProductFilters = ({ filter, onChange, onSearchChange }) => {
 };
 
 ProductFilters.propTypes = {
-    filter: PropTypes.object,
     onChange: PropTypes.func,
     onSearchChange: PropTypes.func,
 };
 
 ProductFilters.defaultProps = {
-    filter: {},
     onChange: null,
     onSearchChange: null,
 };

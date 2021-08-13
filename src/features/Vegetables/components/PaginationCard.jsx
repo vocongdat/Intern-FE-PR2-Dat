@@ -16,9 +16,11 @@ const PaginationCard = () => {
     const dispatch = useDispatch();
 
     const { _page, _limit, _totalRow } = pagination;
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
     useEffect(() => {
         setTotalPage(Math.ceil(_totalRow / _limit));
+        scrollToTop();
     }, [pagination]);
 
     const handleChange = (event, value) => {

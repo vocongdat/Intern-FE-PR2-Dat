@@ -20,31 +20,26 @@ const schema = yup.object().shape({
         .number()
         .positive('Please enter a positive number.')
         .min(1, 'Min is 1')
-        .required('Please enter price')
-        .typeError('Please enter a valid price.'),
-    weight: yup.string('Please enter a weight').typeError('Please enter a valid weight.'),
-    quantity: yup
-        .number()
-        .positive('Please enter a positive number.')
-        .min(1, 'Min is 1')
-        .required('Please enter price')
-        .typeError('Please enter a valid quantity.'),
-    images: yup.string('Please enter images').typeError('Please enter a valid image.'),
-    description: yup.string().required('Please enter description.'),
-    categoryName: yup.string('Please enter name').required('Please enter categoryName.'),
+        .required('Please enter price'),
+    weight: yup
+        .array()
+        .required()
+        .of(yup.string('Please enter a weight array'))
+        .typeError('Please enter a valid weight array.'),
+    images: yup
+        .array()
+        .required()
+        .of(yup.string().url())
+        .typeError('Please enter array url images'),
+    description: yup
+        .array()
+        .of(yup.string('Please enter description array'))
+        .required('Please enter description.'),
+    categoryName: yup
+        .array()
+        .of(yup.string('Please enter categoryName'))
+        .required('Please enter categoryName.'),
     slug: yup.string().required('Please enter slug.'),
-    viewed: yup
-        .number()
-        .positive('Please enter a positive viewed.')
-        .min(1, 'Min is 1')
-        .required('Please enter price')
-        .typeError('Please enter a valid viewed.'),
-    sold: yup
-        .number()
-        .positive('Please enter a positive sold.')
-        .min(1, 'Min is 1')
-        .required('Please enter price')
-        .typeError('Please enter a valid sold.'),
 });
 
 const ProductForm = ({ initialValues, onSubmit }) => {
@@ -73,13 +68,10 @@ const ProductForm = ({ initialValues, onSubmit }) => {
                 <InputField name='name' control={control} label='Name' />
                 <InputField name='price' control={control} label='Price' type='number' />
                 <InputField name='weight' control={control} label='Weight' />
-                <InputField name='quantity' control={control} label='Quantity' type='number' />
                 <InputField name='images' control={control} label='Images' />
                 <InputField name='description' control={control} label='Description' />
                 <InputField name='categoryName' control={control} label='Name Category' />
                 <InputField name='slug' control={control} label='slug' />
-                <InputField name='viewed' control={control} label='Viewed' type='number' />
-                <InputField name='sold' control={control} label='Sold' type='number' />
 
                 {error && <Alert severity='error'>{error}</Alert>}
 

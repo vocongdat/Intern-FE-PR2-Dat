@@ -7,6 +7,7 @@ function* fetchUser(action) {
     try {
         const { id } = yield jwt.decode(action.payload);
         const response = yield call(managementApi.getUsersById, id);
+        sessionStorage.setItem('infoUser', JSON.stringify(response.body));
         yield put(userActions.fetchUserSuccess(response.body));
     } catch (error) {
         yield put(userActions.fetchUserFailed());

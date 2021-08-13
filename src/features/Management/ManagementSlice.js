@@ -11,7 +11,7 @@ const initialState = {
         _limit: 20,
         deletedAt_ne: true,
         _order: 'desc',
-        _sort: 'createdAt',
+        _sort: 'updatedAt',
     },
     pagination: {
         _page: 1,
@@ -23,7 +23,7 @@ const initialState = {
         _limit: 20,
         deletedAt_ne: false,
         _order: 'desc',
-        _sort: 'createdAt',
+        _sort: 'updatedAt',
     },
     paginationTrash: {
         _page: 1,
@@ -141,6 +141,8 @@ const managementSlice = createSlice({
         fetchCartCheckoutFailed(state) {
             state.loading = false;
         },
+
+        setStatusOrder(state, action) {},
     },
 });
 

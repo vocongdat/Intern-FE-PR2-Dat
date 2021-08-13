@@ -56,6 +56,7 @@ const CardProduct = ({ vegetableInfo }) => {
     const [isStatusNotify, setIsStatusNotify] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const idCurrentUser = localStorage.getItem('access_token');
+    const userInfo = JSON.parse(sessionStorage.getItem('infoUser')) || {};
 
     const handleQuickViewOpen = () => {
         setQuickView(true);
@@ -98,7 +99,7 @@ const CardProduct = ({ vegetableInfo }) => {
             toast.success(`Thêm thành công "${name}" vào giỏ hàng`);
 
             const updateCartServer = {
-                userId: idCurrentUser,
+                userInfo,
                 list: newCartList,
             };
 
@@ -129,7 +130,7 @@ const CardProduct = ({ vegetableInfo }) => {
             localStorage.setItem('favoriteLength', newFavoriteList.length);
             toast.success(`Thêm thành công "${name}" vào danh sách yêu thích`);
             const updateFavoriteServer = {
-                userId: idCurrentUser,
+                userInfo,
                 list: newFavoriteList,
             };
 

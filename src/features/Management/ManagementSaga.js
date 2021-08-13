@@ -1,6 +1,7 @@
 import managementApi from 'api/managementApi';
 import vegetableApi from 'api/vegetableApi';
-import { call, debounce, put, takeLatest } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
+import { call, debounce, delay, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { managementActions } from './ManagementSlice';
 
 function* fetchListProduct(action) {
@@ -41,7 +42,7 @@ function* fetchListTrashProduct(action) {
 
 function* fetchUser(action) {
     try {
-        const response = yield call(managementApi.getUsers, action.payload);
+        const response = yield call(managementApi.getAllUsers, action.payload);
         yield put(managementActions.fetchUserSuccess(response));
     } catch (error) {
         yield put(managementActions.fetchUserFailed());
@@ -65,6 +66,12 @@ function* fetchCartCheckout(action) {
     }
 }
 
+function* setStatusOrder(action) {
+    yield call(managementApi.setOrderState, action.payload);
+    delay(500);
+    toast.success('Cập nhật trạng thái đơn hàng thành công');
+}
+
 function* handleSearchDebounce(action) {
     yield put(managementActions.setFilter(action.payload));
 }
@@ -83,6 +90,8 @@ export default function* managementSaga() {
     yield takeLatest(managementActions.fetchProductId, fetchProductId);
 
     yield takeLatest(managementActions.fetchCartCheckout, fetchCartCheckout);
+
+    yield takeEvery(managementActions.setStatusOrder, setStatusOrder);
 
     yield debounce(500, managementActions.setFilterWithDebounce.type, handleSearchDebounce);
 }

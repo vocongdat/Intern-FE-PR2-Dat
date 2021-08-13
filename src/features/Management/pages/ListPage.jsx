@@ -79,7 +79,7 @@ const ListPage = () => {
             const data = { ...product, deletedAt: true };
             await vegetableApi.update(data);
 
-            toast.success('Remove Vegetable successfully!');
+            toast.info('1 sản phẩm đã được chuyển vào thùng rác');
 
             const newFilter = { ...filter };
             dispatch(managementActions.setFilter(newFilter));
@@ -89,7 +89,6 @@ const ListPage = () => {
     };
 
     const handleEditVegetable = async (product) => {
-        console.log('product', product);
         localStorage.setItem('product', JSON.stringify(product));
         history.push(`${match.url}/${product.id}`);
     };
@@ -100,6 +99,7 @@ const ListPage = () => {
 
             <Box className={classes.titleContainer}>
                 <Typography variant='h4'>Product</Typography>
+                <Typography variant='h5'>Hiện tại có {pagination._totalRow} sản phẩm</Typography>
 
                 <Link to={`${match.url}/add`} style={{ textDecoration: 'none' }}>
                     <Button variant='contained' color='primary'>
@@ -109,11 +109,7 @@ const ListPage = () => {
             </Box>
 
             <Box sx={{ my: 3 }}>
-                <ProductFilters
-                    filter={filter}
-                    onChange={handleFilterChange}
-                    onSearchChange={handleSearchChange}
-                />
+                <ProductFilters onChange={handleFilterChange} onSearchChange={handleSearchChange} />
             </Box>
 
             <ProductTable
