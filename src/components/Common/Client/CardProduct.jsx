@@ -67,44 +67,41 @@ const CardProduct = ({ vegetableInfo }) => {
 
     const handleAddToCart = async () => {
         const cartList = JSON.parse(localStorage.getItem('cartList')) || [];
-        if (!idCurrentUser) setIsAlert(true);
-        else {
-            const valueForm = {
-                userId: idCurrentUser,
-                quantity: 1,
-                price,
-                slug,
-                image: images[0],
-                name,
-                vegetableId: id,
+        const valueForm = {
+            userId: idCurrentUser,
+            quantity: 1,
+            price,
+            slug,
+            image: images[0],
+            name,
+            vegetableId: id,
+        };
+        let newCartList = [];
+        const result = cartList.find((vegetable) => vegetable.vegetableId === id);
+        if (result) {
+            const newResult = {
+                ...result,
+                quantity: Number(result.quantity) + 1,
             };
-            let newCartList = [];
-            const result = cartList.find((vegetable) => vegetable.vegetableId === id);
-            if (result) {
-                const newResult = {
-                    ...result,
-                    quantity: Number(result.quantity) + 1,
-                };
-                const cartRemaining = cartList.filter((info) => info.vegetableId !== id);
-                newCartList = [newResult, ...cartRemaining];
-            } else {
-                newCartList = [valueForm, ...cartList];
-            }
-
-            localStorage.setItem('cartList', JSON.stringify(newCartList));
-            if (newCartList.length > 0) {
-                const total = newCartList.reduce((acc, cur) => acc + Number(cur.quantity), 0);
-                localStorage.setItem('countCart', total);
-            }
-            toast.success(`Thêm thành công "${name}" vào giỏ hàng`);
-
-            const updateCartServer = {
-                userInfo,
-                list: newCartList,
-            };
-
-            await cartApi.add(updateCartServer);
+            const cartRemaining = cartList.filter((info) => info.vegetableId !== id);
+            newCartList = [newResult, ...cartRemaining];
+        } else {
+            newCartList = [valueForm, ...cartList];
         }
+
+        localStorage.setItem('cartList', JSON.stringify(newCartList));
+        if (newCartList.length > 0) {
+            const total = newCartList.reduce((acc, cur) => acc + Number(cur.quantity), 0);
+            localStorage.setItem('countCart', total);
+        }
+        toast.success(`Thêm thành công "${name}" vào giỏ hàng`);
+
+        const updateCartServer = {
+            userInfo,
+            list: newCartList,
+        };
+
+        await cartApi.add(updateCartServer);
     };
 
     const handleCloseAlert = () => {
@@ -114,33 +111,37 @@ const CardProduct = ({ vegetableInfo }) => {
     const handleAddToWish = async () => {
         const favoriteList = JSON.parse(localStorage.getItem('favorite')) || [];
         if (!idCurrentUser) setIsAlert(true);
-        else setIsLike(!isLike);
-        if (!isLike) {
-            const valueFavorite = {
-                userId: idCurrentUser,
-                vegetableId: id,
-                name,
-                price,
-                slug,
-                image: images[0],
-            };
+        else {
+            setIsLike(!isLike);
+            if (!isLike) {
+                const valueFavorite = {
+                    userId: idCurrentUser,
+                    vegetableId: id,
+                    name,
+                    price,
+                    slug,
+                    image: images[0],
+                };
 
-            const newFavoriteList = [valueFavorite, ...favoriteList];
-            localStorage.setItem('favorite', JSON.stringify(newFavoriteList));
-            localStorage.setItem('favoriteLength', newFavoriteList.length);
-            toast.success(`Thêm thành công "${name}" vào danh sách yêu thích`);
-            const updateFavoriteServer = {
-                userInfo,
-                list: newFavoriteList,
-            };
+                const newFavoriteList = [valueFavorite, ...favoriteList];
+                localStorage.setItem('favorite', JSON.stringify(newFavoriteList));
+                localStorage.setItem('favoriteLength', newFavoriteList.length);
+                toast.success(`Thêm thành công "${name}" vào danh sách yêu thích`);
+                const updateFavoriteServer = {
+                    userInfo,
+                    list: newFavoriteList,
+                };
 
-            await favoriteApi.add(updateFavoriteServer);
-        } else {
-            const removeFavorite = favoriteList.filter((vegetable) => vegetable.vegetableId !== id);
-            localStorage.setItem('favorite', JSON.stringify(removeFavorite));
-            localStorage.setItem('favoriteLength', removeFavorite.length);
-            toast.success(`Xóa thành công "${name}" khỏi danh sách yêu thích`);
-            await favoriteApi.remove(id);
+                await favoriteApi.add(updateFavoriteServer);
+            } else {
+                const removeFavorite = favoriteList.filter(
+                    (vegetable) => vegetable.vegetableId !== id
+                );
+                localStorage.setItem('favorite', JSON.stringify(removeFavorite));
+                localStorage.setItem('favoriteLength', removeFavorite.length);
+                toast.success(`Xóa thành công "${name}" khỏi danh sách yêu thích`);
+                await favoriteApi.remove(id);
+            }
         }
     };
 
